@@ -1,0 +1,10 @@
+<div th:fragment="header" xmlns:th="http://www.thymeleaf.org"
+     th:if="${session.loggedUser != null}"
+     style="text-align:right">
+    Hello <span th:text="${session.loggedUser.firstName()}"></span>
+    (<span th:text="${session.loggedUser.profile()}"></span>)
+    |
+    <form th:action="@{/logout}" method="post" style="display:inline">
+        <button type="submit">Log out</button>
+    </form>
+</div>
