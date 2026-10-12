@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head><meta charset="UTF-8"><title>Equipment</title></head>
+<body>
+<div th:replace="~{fragments/header :: header}"></div>
+<h1 th:text="${equipment.reference} + ' - ' + ${equipment.label}"></h1>
+<p>Type: <span th:text="${equipment.type.label}"></span></p>
+<p>Station: <a th:href="@{/stations/{id}/equipments(id=${equipment.station.id})}"
+               th:text="${equipment.station.name}"></a></p>
+<p>State: <span th:text="${equipment.operatingState}"></span></p>
+<p>Description: <span th:text="${equipment.description}"></span></p>
+
+<h2>Ongoing incidents</h2>
+<ul>
+    <li th:each="i : ${ongoingIncidents}"
+        th:text="${#temporals.format(i.openedAt, 'dd/MM/yyyy HH:mm')} + ' - ' + ${i.description}"></li>
+    <li th:if="${#lists.isEmpty(ongoingIncidents)}">None</li>
+</ul>
+
+<h2>Past incidents</h2>
+<ul>
+    <li th:each="i : ${pastIncidents}"
+        th:text="${#temporals.format(i.openedAt, 'dd/MM/yyyy')} + ' → ' + ${#temporals.format(i.closedAt, 'dd/MM/yyyy')} + ' - ' + ${i.description}"></li>
+    <li th:if="${#lists.isEmpty(pastIncidents)}">None</li>
+</ul>
+</body>
+</html>

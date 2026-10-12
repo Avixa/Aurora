@@ -42,7 +42,7 @@ public class AuthController {
         request.changeSessionId();
         request.getSession().setAttribute(SESSION_KEY,
                 new UserSession(u.getId(), u.getFirstName(), u.getProfile()));
-        return "redirect:/programmeurs";
+        return "redirect:/stations";
     }
 
     // POST /logout: closes the session and goes back to the login page.

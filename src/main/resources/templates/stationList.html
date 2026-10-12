@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Stations</title>
+</head>
+<body>
+<div th:replace="~{fragments/header :: header}"></div>
+
+<h1>Stations</h1>
+
+<table border="1">
+    <tr>
+        <th>Name</th>
+        <th>Latitude</th>
+        <th>Longitude</th>
+        <th>Equipments</th>
+    </tr>
+    <tr th:each="s : ${stations}">
+        <td th:text="${s.name}"></td>
+        <td th:text="${s.latitude != null} ? ${s.latitude} : '-'"></td>
+        <td th:text="${s.longitude != null} ? ${s.longitude} : '-'"></td>
+        <td>
+            <a th:href="@{/stations/{id}/equipments(id=${s.id})}">View equipments</a>
+        </td>
+    </tr>
+    <tr th:if="${#lists.isEmpty(stations)}">
+        <td colspan="4">No stations found.</td>
+    </tr>
+</table>
+</body>
+</html>

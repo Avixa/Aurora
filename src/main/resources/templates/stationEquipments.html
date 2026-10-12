@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head><meta charset="UTF-8"><title>Equipments</title></head>
+<body>
+<div th:replace="~{fragments/header :: header}"></div>
+<h1>Equipments of <span th:text="${station.name}"></span></h1>
+<table border="1">
+    <tr><th>Reference</th><th>Label</th><th>Type</th><th>State</th></tr>
+    <tr th:each="e : ${equipments}">
+        <td><a th:href="@{/equipments/{id}(id=${e.id})}" th:text="${e.reference}"></a></td>
+        <td th:text="${e.label}"></td>
+        <td th:text="${e.type.label}"></td>
+        <td th:text="${e.operatingState}"></td>
+    </tr>
+</table>
+</body>
+</html>
