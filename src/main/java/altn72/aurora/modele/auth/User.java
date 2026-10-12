@@ -15,10 +15,10 @@ public class User {
     private String login;
 
     // BCrypt hash (60 characters), never the plain-text password
-    @Column(name = "password", nullable = false, length = 100)
+    @Column(name = "mot_de_passe", nullable = false, length = 100)
     private String password;
 
-    @Column(name = "name", nullable = false, length = 50)
+    @Column(name = "prenom", nullable = false, length = 50)
     private String firstName;
 
     @Enumerated(EnumType.STRING)
