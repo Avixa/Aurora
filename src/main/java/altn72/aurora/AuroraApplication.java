@@ -1,14 +1,14 @@
-package altn72.tpfilrouge;
+package altn72.aurora;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class TpFilRougeApplication {
+public class AuroraApplication {
 
     public static void main(String[] args) {
 
-        SpringApplication.run(TpFilRougeApplication.class, args);
+        SpringApplication.run(AuroraApplication.class, args);
 
 
     }

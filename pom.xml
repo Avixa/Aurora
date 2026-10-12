@@ -9,10 +9,10 @@
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>altn72</groupId>
-    <artifactId>TpFilRouge</artifactId>
+    <artifactId>Aurora</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <name>TpFilRouge</name>
-    <description>TpFilRouge</description>
+    <name>Aurora</name>
+    <description>Aurora</description>
     <url/>
     <licenses>
         <license/>
