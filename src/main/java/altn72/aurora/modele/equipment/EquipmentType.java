@@ -1,4 +1,4 @@
-package altn72.aurora.modele;
+package altn72.aurora.modele.equipment;
 
 import jakarta.persistence.*;
 

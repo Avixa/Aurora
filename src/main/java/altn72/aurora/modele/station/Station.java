@@ -14,7 +14,6 @@ public class Station {
     @Column(name = "nom", nullable = false, length = 100, unique = true)
     private String name;
 
-    // Optional coordinates (network mapping). Both are null, or both are set.
     @Column(name = "latitude")
     private Double latitude;
 

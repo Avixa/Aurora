@@ -19,13 +19,11 @@ public class AuthController {
     private final UserService userService;
     public AuthController(UserService userService) { this.userService = userService; }
 
-    // GET /login: shows the login form (templates/login.html).
     @GetMapping("/login")
     public String showLogin() {
         return "login";
     }
 
-    // POST /login: checks the credentials.
     @PostMapping("/login")
     public String login(@RequestParam String login,
                         @RequestParam String password,
@@ -45,7 +43,6 @@ public class AuthController {
         return "redirect:/stations";
     }
 
-    // POST /logout: closes the session and goes back to the login page.
     @PostMapping("/logout")
     public String logout(HttpSession session) {
         session.invalidate();

@@ -11,7 +11,6 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-@Transactional(readOnly = true)
 public class StationService {
 
     private final StationRepository stationRepository;
@@ -30,8 +29,9 @@ public class StationService {
         return stationRepository.findById(id);
     }
 
-    // F2: equipments of a station, with their type and operating state
+    // F2: equipement de la station et type
     public List<Equipment> getEquipmentsByStation(Long stationId) {
         return equipmentRepository.findByStationIdWithType(stationId);
     }
+
 }

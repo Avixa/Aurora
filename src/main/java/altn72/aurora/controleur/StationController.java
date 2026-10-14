@@ -15,14 +15,12 @@ public class StationController {
     private final StationService stationService;
     public StationController(StationService stationService) { this.stationService = stationService; }
 
-    // GET /stations: list of stations (entry point to pick one)
     @GetMapping
     public String listStations(Model model) {
         model.addAttribute("stations", stationService.getStations());
         return "stationList";
     }
 
-    // GET /stations/{id}/equipments: F2, equipments of a station
     @GetMapping("/{stationId}/equipments")
     public String listEquipments(@PathVariable Long stationId, Model model) {
         Station station = stationService.getStation(stationId)

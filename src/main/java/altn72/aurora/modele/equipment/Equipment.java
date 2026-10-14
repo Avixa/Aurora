@@ -1,6 +1,5 @@
 package altn72.aurora.modele.equipment;
 
-import altn72.aurora.modele.EquipmentType;
 import altn72.aurora.modele.station.Station;
 import jakarta.persistence.*;
 
@@ -13,7 +12,7 @@ public class Equipment {
     @Column(name = "id", nullable = false)
     private Long id;
 
-    // RG9: the reference of an equipment is unique
+    // RG9: reference unique
     @Column(name = "reference", nullable = false, length = 30, unique = true)
     private String reference;
 
