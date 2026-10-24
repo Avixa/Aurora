@@ -5,12 +5,14 @@ import altn72.aurora.modele.auth.UserSession;
 import altn72.aurora.service.UserService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Optional;
 
+@Slf4j
 @Controller
 public class AuthController {
 
@@ -21,6 +23,7 @@ public class AuthController {
 
     @GetMapping("/login")
     public String showLogin() {
+        log.debug("Opening login page");
         return "login";
     }
 
@@ -33,6 +36,7 @@ public class AuthController {
         if (user.isEmpty()) {
             model.addAttribute("error", "Invalid login or password");
             model.addAttribute("login", login);
+            log.info("Unable to find a corresponding user, redirect to /login with error");
             return "login";
         }
         User u = user.get();
@@ -40,12 +44,14 @@ public class AuthController {
         request.changeSessionId();
         request.getSession().setAttribute(SESSION_KEY,
                 new UserSession(u.getId(), u.getFirstName(), u.getProfile()));
+        log.debug("User authenticated, redirect to /stations");
         return "redirect:/stations";
     }
 
     @PostMapping("/logout")
     public String logout(HttpSession session) {
         session.invalidate();
+        log.info("User logout, redirect to /login");
         return "redirect:/login";
     }
 }
