@@ -4,63 +4,76 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="5d4d2069-84fe-43dc-9f5f-c7b177d8855a" name="Changes" comment="🚚  from tp to aurora - rename artifact">
-      <change afterPath="$PROJECT_DIR$/src/main/java/altn72/aurora/config/LoginInterceptor.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/altn72/aurora/config/WebConfig.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/altn72/aurora/modele/auth/User.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/altn72/aurora/modele/auth/UserRepository.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/altn72/aurora/modele/auth/UserSession.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/database/init_script.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/templates/fragments/header.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/templates/login.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/templates/test.html" afterDir="false" />
+    <list default="true" id="5d4d2069-84fe-43dc-9f5f-c7b177d8855a" name="Changes" comment="🗃️ Database delivery">
+      <change afterPath="$PROJECT_DIR$/src/main/java/altn72/aurora/config/ForbiddenActionException.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/altn72/aurora/config/PermissionInterceptor.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/altn72/aurora/config/RequiresPermission.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/altn72/aurora/controleur/DashboardController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/altn72/aurora/modele/auth/Permission.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/altn72/aurora/modele/incident/AttentionLevel.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/altn72/aurora/service/DashboardService.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/templates/dashboard.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/templates/error/403.hmtl.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/compiler.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/compiler.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/dataSources.local.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources.local.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/dataSources/23a49601-4d8f-4857-8251-e6b25e3001b3/storage_v2/_src_/schema/altn72.gF2uqw.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/dataSources/23a49601-4d8f-4857-8251-e6b25e3001b3/storage_v2/_src_/schema/information_schema.FNRwLQ.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/dataSources/23a49601-4d8f-4857-8251-e6b25e3001b3/storage_v2/_src_/schema/mysql.osA4Bg.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/dataSources/23a49601-4d8f-4857-8251-e6b25e3001b3/storage_v2/_src_/schema/performance_schema.kIw0nw.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/jpa.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/jpa.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/journal.md" beforeDir="false" afterPath="$PROJECT_DIR$/journal.md" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/altn72/aurora/controleur/ProgrammeurControleur.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/altn72/aurora/controleur/AuthController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/altn72/aurora/modele/Programmeur.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/altn72/aurora/modele/ProgrammeurRepository.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/altn72/aurora/service/ProgrammeurService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/altn72/aurora/service/UserService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/templates/detailsProgrammeur.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/templates/listeProgrammeurs.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/templates/nouveauProgrammeur.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/altn72/aurora/AuroraApplication.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/altn72/aurora/AuroraApplication.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/altn72/aurora/config/WebConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/altn72/aurora/config/WebConfig.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/altn72/aurora/controleur/AuthController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/altn72/aurora/controleur/AuthController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/altn72/aurora/controleur/IncidentController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/altn72/aurora/controleur/IncidentController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/altn72/aurora/modele/auth/User.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/altn72/aurora/modele/auth/User.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/altn72/aurora/modele/auth/UserSession.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/altn72/aurora/modele/auth/UserSession.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/altn72/aurora/modele/incident/IncidentRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/altn72/aurora/modele/incident/IncidentRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/templates/equipmentDetails.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/templates/equipmentDetails.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/templates/fragments/header.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/templates/fragments/header.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/application.properties" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/templates/detailsProgrammeur.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/templates/listeProgrammeurs.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/templates/nouveauProgrammeur.html" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
-  <component name="DatabaseLocalColorSettings">
-    <colors>
-      <entry key="23a49601-4d8f-4857-8251-e6b25e3001b3" value="" />
-    </colors>
-  </component>
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
       <list>
         <option value="Interface" />
-        <option value="HTML File" />
+        <option value="com.intellij.jpb.JpaEntity" />
         <option value="Class" />
+        <option value="HTML File" />
       </list>
     </option>
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
-  <component name="GitHubPullRequestSearchHistory"><![CDATA[{
-  "lastFilter": {
-    "state": "OPEN",
-    "assignee": "Ethan-Da"
+  <component name="GitHubPullRequestSearchHistory">{
+  &quot;lastFilter&quot;: {
+    &quot;state&quot;: &quot;OPEN&quot;,
+    &quot;assignee&quot;: &quot;Avixa&quot;
   }
-}]]></component>
-  <component name="GithubPullRequestsUISettings"><![CDATA[{
-  "selectedUrlAndAccountId": {
-    "url": "https://github.com/Avixa/Aurora.git",
-    "accountId": "2c425b9a-c078-45e2-a9a5-99bb1a2e87b7"
+}</component>
+  <component name="GithubPullRequestsUISettings">{
+  &quot;selectedUrlAndAccountId&quot;: {
+    &quot;url&quot;: &quot;https://github.com/Avixa/Aurora.git&quot;,
+    &quot;accountId&quot;: &quot;10a2b7ae-b95a-4ccd-bb0c-4958e08ea158&quot;
   }
-}]]></component>
+}</component>
   <component name="HttpClientOnboardingState">{
   &quot;isOnboardingCommentShown&quot;: true
+}</component>
+  <component name="KubernetesApiPersistence">{}</component>
+  <component name="KubernetesApiProvider">{
+  &quot;isMigrated&quot;: true
 }</component>
   <component name="MavenImportPreferences">
     <option name="generalSettings">
@@ -78,71 +91,56 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "DefaultHtmlFileTemplate": "HTML File",
-    "HTTP Request.generated-requests | #10.executor": "Run",
-    "HTTP Request.generated-requests | #11.executor": "Run",
-    "HTTP Request.generated-requests | #14.executor": "Run",
-    "HTTP Request.generated-requests | #7.executor": "Run",
-    "HTTP Request.generated-requests | #8.executor": "Run",
-    "HTTP Request.generated-requests | #9.executor": "Run",
-    "ModuleVcsDetector.initialDetectionPerformed": "true",
-    "RequestMappingsPanelOrder0": "0",
-    "RequestMappingsPanelOrder1": "1",
-    "RequestMappingsPanelWidth0": "75",
-    "RequestMappingsPanelWidth1": "75",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252": "true",
-    "RunOnceActivity.git.unshallow": "true",
-    "RunOnceActivity.typescript.service.memoryLimit.init": "true",
-    "Spring Boot.AuroraApplication.executor": "Run",
-    "Spring Boot.TpFilRougeApplication.executor": "Run",
-    "codeWithMe.voiceChat.enabledByDefault": "false",
-    "com.github.patou.gitmoji.migration-offered": "true",
-    "git-widget-placeholder": "master",
-    "ignore.virus.scanning.warn.message": "true",
-    "kotlin-language-version-configured": "true",
-    "last_opened_file_path": "P:/MES COURS/Developpement Full Stack avec Java/ALTN72 - 2026_2027/DEV_CODE/GitHub/TpFilRouge_CORRIGE_5",
-    "nodejs_package_manager_path": "npm",
-    "project.structure.last.edited": "Modules",
-    "project.structure.proportion": "0.15",
-    "project.structure.side.proportion": "0.2",
-    "settings.editor.selected.configurable": "reference.settings.project.maven.repository.indices",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;DefaultHtmlFileTemplate&quot;: &quot;HTML File&quot;,
+    &quot;HTTP Request.generated-requests | #10.executor&quot;: &quot;Run&quot;,
+    &quot;HTTP Request.generated-requests | #11.executor&quot;: &quot;Run&quot;,
+    &quot;HTTP Request.generated-requests | #14.executor&quot;: &quot;Run&quot;,
+    &quot;HTTP Request.generated-requests | #7.executor&quot;: &quot;Run&quot;,
+    &quot;HTTP Request.generated-requests | #8.executor&quot;: &quot;Run&quot;,
+    &quot;HTTP Request.generated-requests | #9.executor&quot;: &quot;Run&quot;,
+    &quot;ModuleVcsDetector.initialDetectionPerformed&quot;: &quot;true&quot;,
+    &quot;RequestMappingsPanelOrder0&quot;: &quot;0&quot;,
+    &quot;RequestMappingsPanelOrder1&quot;: &quot;1&quot;,
+    &quot;RequestMappingsPanelWidth0&quot;: &quot;75&quot;,
+    &quot;RequestMappingsPanelWidth1&quot;: &quot;75&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.typescript.service.memoryLimit.init&quot;: &quot;true&quot;,
+    &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
+    &quot;Spring Boot.AuroraApplication.executor&quot;: &quot;Run&quot;,
+    &quot;Spring Boot.TpFilRougeApplication.executor&quot;: &quot;Run&quot;,
+    &quot;codeWithMe.voiceChat.enabledByDefault&quot;: &quot;false&quot;,
+    &quot;com.intellij.ml.llm.matterhorn.ej.ui.settings.DefaultModelSelectionForGA.v1&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;master&quot;,
+    &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,
+    &quot;junie.onboarding.icon.badge.shown&quot;: &quot;true&quot;,
+    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;P:/MES COURS/Developpement Full Stack avec Java/ALTN72 - 2026_2027/DEV_CODE/GitHub/TpFilRouge_CORRIGE_5&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;project.structure.last.edited&quot;: &quot;Modules&quot;,
+    &quot;project.structure.proportion&quot;: &quot;0.15&quot;,
+    &quot;project.structure.side.proportion&quot;: &quot;0.2&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;File.Encoding&quot;,
+    &quot;to.speed.mode.migration.done&quot;: &quot;true&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   },
-  "keyToStringList": {
-    "DatabaseDriversLRU": [
-      "mysql",
-      "mariadb"
+  &quot;keyToStringList&quot;: {
+    &quot;DatabaseDriversLRU&quot;: [
+      &quot;mysql&quot;,
+      &quot;mariadb&quot;
     ]
   }
-}]]></component>
-  <component name="RecentsManager">
-    <key name="MoveFile.RECENT_KEYS">
-      <recent name="C:\Users\ethan\Desktop\ING2\Java\altn72\Projet\src\main\resources\database" />
-    </key>
-  </component>
+}</component>
   <component name="RunAnythingCache">
     <option name="myCommands">
       <command value="TpFilRougeApplication" />
-    </option>
-  </component>
-  <component name="RunDashboard">
-    <option name="configurationStatuses">
-      <map>
-        <entry key="HttpClient.HttpRequestRunConfigurationType">
-          <value>
-            <map>
-              <entry key="generated-requests | #11" value="STOPPED" />
-              <entry key="generated-requests | #14" value="STOPPED" />
-              <entry key="generated-requests | #7" value="STOPPED" />
-              <entry key="generated-requests | #8" value="STOPPED" />
-              <entry key="generated-requests | #9" value="STOPPED" />
-            </map>
-          </value>
-        </entry>
-      </map>
     </option>
   </component>
   <component name="RunManager" selected="Spring Boot.AuroraApplication">
@@ -162,12 +160,31 @@
       <method v="2" />
     </configuration>
     <configuration name="AuroraApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" nameIsGenerated="true">
+      <envs>
+        <env name="DB_PASSWORD" value="arthur" />
+      </envs>
       <module name="TpFilRouge" />
       <option name="SPRING_BOOT_MAIN_CLASS" value="altn72.aurora.AuroraApplication" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
     </configuration>
+    <configuration name="TpFilRougeApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" nameIsGenerated="true">
+      <module name="TpFilRouge" />
+      <option name="SPRING_BOOT_MAIN_CLASS" value="altn72.tpfilrouge.TpFilRougeApplication" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <list>
+      <item itemvalue="HTTP Request.generated-requests | #7" />
+      <item itemvalue="HTTP Request.generated-requests | #8" />
+      <item itemvalue="HTTP Request.generated-requests | #9" />
+      <item itemvalue="HTTP Request.generated-requests | #11" />
+      <item itemvalue="HTTP Request.generated-requests | #14" />
+      <item itemvalue="Spring Boot.AuroraApplication" />
+      <item itemvalue="Spring Boot.TpFilRougeApplication" />
+    </list>
     <recent_temporary>
       <list>
         <item itemvalue="HTTP Request.generated-requests | #14" />
@@ -181,8 +198,8 @@
   <component name="SharedIndexes">
     <attachedChunks>
       <set>
-        <option value="bundled-jdk-30f59d01ecdd-2fc7cc6b9a17-intellij.indexing.shared.core-IU-253.30387.90" />
-        <option value="bundled-js-predefined-d6986cc7102b-9b0f141eb926-JavaScript-IU-253.30387.90" />
+        <option value="bundled-jdk-9823dce3aa75-bf35d07a577b-intellij.indexing.shared.core-IU-252.26199.169" />
+        <option value="bundled-js-predefined-d6986cc7102b-9c94529fcfe0-JavaScript-IU-252.26199.169" />
       </set>
     </attachedChunks>
   </component>
@@ -193,15 +210,17 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1790066336942</updated>
-      <workItem from="1791792233447" duration="3342000" />
+      <workItem from="1791792292366" duration="4926000" />
+      <workItem from="1791979289861" duration="5656000" />
+      <workItem from="1793346323213" duration="11915000" />
     </task>
-    <task id="LOCAL-00001" summary="🚚  from tp to aurora - rename artifact">
+    <task id="LOCAL-00001" summary="🗃️ Database delivery">
       <option name="closed" value="true" />
-      <created>1791792534156</created>
+      <created>1791796812252</created>
       <option name="number" value="00001" />
       <option name="presentableId" value="LOCAL-00001" />
       <option name="project" value="LOCAL" />
-      <updated>1791792534156</updated>
+      <updated>1791796812253</updated>
     </task>
     <option name="localTasksCounter" value="2" />
     <servers />
@@ -212,7 +231,7 @@
   <component name="VcsManagerConfiguration">
     <MESSAGE value="Dev Full Stack Java / 2026-27&#10;Corrigé TP 1-2" />
     <MESSAGE value="Dev Full Stack Java - 2026-27&#10;Corrigé TP 3-4" />
-    <MESSAGE value="  from tp to aurora - rename artifact" />
-    <option name="LAST_COMMIT_MESSAGE" value="  from tp to aurora - rename artifact" />
+    <MESSAGE value="️ Database delivery" />
+    <option name="LAST_COMMIT_MESSAGE" value="️ Database delivery" />
   </component>
 </project>

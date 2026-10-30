@@ -30,7 +30,13 @@ public class User {
     private Profile profile;
 
     public enum Profile {
-        RESPONSABLE_EXPLOITATION,
-        AGENT
+        RESPONSABLE_EXPLOITATION("Responsable d'exploitation"),
+        AGENT("Agent");
+
+        private final String label;
+
+        Profile(String label) { this.label = label; }
+
+        public String getLabel() { return label; }
     }
 }

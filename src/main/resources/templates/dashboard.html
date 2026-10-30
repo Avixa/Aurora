@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="fr" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Tableau de bord</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
+</head>
+<body>
+<div th:replace="~{fragments/header :: header}"></div>
+
+<div class="container mt-4">
+    <h1>Tableau de bord</h1>
+
+    <p>
+        <a th:href="@{/stations}" class="btn btn-outline-secondary btn-sm">Stations et équipements</a>
+        <a th:href="@{/incidents}" class="btn btn-outline-secondary btn-sm">Tous les incidents</a>
+    </p>
+
+    <!-- Indicateurs synthétiques : sur tout le réseau, sans tenir compte des filtres -->
+    <p>
+        Incidents actifs : <strong th:text="${totalActive}"></strong>
+        <span th:each="entry : ${counts}">
+            · <span th:text="${entry.key.label}"></span> : <strong th:text="${entry.value}"></strong>
+        </span>
+    </p>
+
+    <!-- Filtres : station et niveau d'attention -->
+    <form th:action="@{/dashboard}" method="get" class="row g-2 mb-3">
+        <div class="col-auto">
+            <select name="stationId" class="form-select">
+                <option value="">Toutes les stations</option>
+                <option th:each="station : ${stations}"
+                        th:value="${station.id}" th:text="${station.name}"
+                        th:selected="${station.id == selectedStationId}"></option>
+            </select>
+        </div>
+        <div class="col-auto">
+            <select name="level" class="form-select">
+                <option value="">Tous les niveaux</option>
+                <option th:each="lvl : ${levels}"
+                        th:value="${lvl}" th:text="${lvl.label}"
+                        th:selected="${lvl == selectedLevel}"></option>
+            </select>
+        </div>
+        <div class="col-auto">
+            <button type="submit" class="btn btn-primary">Filtrer</button>
+        </div>
+    </form>
+
+    <p th:if="${#lists.isEmpty(incidents)}">Aucun incident actif pour ces critères.</p>
+
+    <table th:unless="${#lists.isEmpty(incidents)}" class="table table-striped align-middle">
+        <thead>
+        <tr>
+            <th>Niveau</th>
+            <th>Station</th>
+            <th>Équipement</th>
+            <th>Description</th>
+            <th>Ouvert depuis</th>
+            <th>Prestataire</th>
+            <th></th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="row : ${incidents}">
+            <td th:switch="${row.level().name()}">
+                <span th:case="'GREEN'" class="badge bg-success" th:text="${row.level().label}"></span>
+                <span th:case="'ORANGE'" class="badge bg-warning text-dark" th:text="${row.level().label}"></span>
+                <span th:case="'RED'" class="badge bg-danger" th:text="${row.level().label}"></span>
+                <span th:case="'ASSIGNED'" class="badge bg-secondary" th:text="${row.level().label}"></span>
+            </td>
+            <td th:text="${row.incident().equipment.station.name}"></td>
+            <td>
+                <a th:href="@{/equipments/{id}(id=${row.incident().equipment.id})}"
+                   th:text="${row.incident().equipment.reference} + ' – ' + ${row.incident().equipment.label}"></a>
+            </td>
+            <td th:text="${row.incident().description}"></td>
+            <td th:text="${row.hoursOpen()} + ' h'"></td>
+            <td th:text="${row.incident().provider?.name} ?: '—'"></td>
+            <td>
+                <a th:href="@{/incidents/{id}(id=${row.incident().id})}" class="btn btn-sm btn-outline-primary">Détail</a>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+</body>
+</html>

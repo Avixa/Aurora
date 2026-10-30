@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html lang="fr" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Accès refusé</title>
+</head>
+<body>
+<div th:replace="~{fragments/header :: header}"></div>
+<div class="container mt-4">
+    <h1>Accès refusé</h1>
+    <p th:text="${message} ?: 'Votre profil ne permet pas cette action.'"></p>
+    <a th:href="@{/dashboard}" class="btn btn-primary">Retour au tableau de bord</a>
+</div>
+</body>
+</html>

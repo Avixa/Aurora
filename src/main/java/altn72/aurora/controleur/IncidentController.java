@@ -1,5 +1,8 @@
 package altn72.aurora.controleur;
 
+import altn72.aurora.config.RequiresPermission;
+import altn72.aurora.modele.auth.Permission;
+
 import altn72.aurora.modele.auth.UserSession;
 import altn72.aurora.modele.incident.Incident;
 import altn72.aurora.modele.provider.ProviderRepository;
@@ -38,6 +41,7 @@ public class IncidentController {
     }
 
     // F4: form
+    @RequiresPermission(Permission.DECLARE_INCIDENT)
     @GetMapping("/equipments/{equipmentId}/incidents/new")
     public String showForm(@PathVariable Long equipmentId, Model model) {
         Incident incident = new Incident();
@@ -48,6 +52,7 @@ public class IncidentController {
     }
 
     // F4: creation
+    @RequiresPermission(Permission.DECLARE_INCIDENT)
     @PostMapping("/equipments/{equipmentId}/incidents")
     public String declare(@PathVariable Long equipmentId,
                           @Valid @ModelAttribute("newIncident") Incident incident,

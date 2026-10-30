@@ -25,6 +25,21 @@ Réponses aux questions du TP 5. Code de référence : ce projet.
 - `${...}` : expression évaluée sur le Model.
 - `xmlns:th` : facultatif, utile à l'IDE.
 
+### Droits par profil (§5.6)
+
+| N°    | Fonctionnalité                        | Profil 1 : Responsable d'exploitation | Profil 2 : Agent |
+|-------|---------------------------------------|---------------------------------------|------------------|
+| F2–F3 | Consulter équipements et fiches       | Lecture Seule                         | Lecture Seule    |
+| F4    | Déclarer un incident                  | Interdit                              | Accès Complet    |
+| F5    | Consulter un incident                 | Accès complet                         | Accès Complet    |
+| F6    | Modifier un incident                  | Interdit                              | Accès Complet    |
+| F7    | Affecter ou réaffecter un prestataire | Accès Complet                         | Accès Complet    |
+| F8    | Déclarer un incident résolu           | Interdit                              | Accès Complet    |
+| F9    | Consulter l'historique                | Lecture Seule                         | Lecture Seule    |
+| F10   | Évaluer un prestataire                | Lecture Seule                         | Accès Complet    |
+| F11   | Tableau de bord                       | Lecture Seule                         | Lecture Seule    |
+
+
 ## 5.7 Templates à créer
 - listeProgrammeurs.html, detailsProgrammeur.html, nouveauProgrammeur.html.
 

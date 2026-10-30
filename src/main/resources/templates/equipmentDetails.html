@@ -11,13 +11,17 @@
 <p>State: <span th:text="${equipment.operatingState}"></span></p>
 <p>Description: <span th:text="${equipment.description}"></span></p>
 
-<p><a th:href="@{/equipments/{id}/incidents/new(id=${equipment.id})}">Report an incident</a></p>
+<a th:if="${session.loggedUser.can('DECLARE_INCIDENT')}"
+   th:href="@{/equipments/{id}/incidents/new(id=${equipment.id})}"
+   class="btn btn-primary">Déclarer un incident</a>
 
 <h2>Ongoing incidents</h2>
 <div th:replace="~{fragments/incidentTable :: incidentTable(${ongoingIncidents}, false)}"></div>
 
 <h2>Past incidents</h2>
 <div th:replace="~{fragments/incidentTable :: incidentTable(${pastIncidents}, false)}"></div>
+
+
 
 </body>
 </html>
