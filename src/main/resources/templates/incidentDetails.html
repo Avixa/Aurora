@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Incident Details</title>
+</head>
+<body>
+
+<div th:replace="~{fragments/header :: header}"></div>
+
+<h1>Incident Details</h1>
+
+<dl>
+    <dt>Description</dt>
+    <dd th:text="${incident.description}"></dd>
+
+    <dt>Opening date</dt>
+    <dd th:text="${#temporals.format(incident.openingDate, 'dd/MM/yyyy HH:mm')}"></dd>
+
+    <dt>Status</dt>
+    <dd th:text="${incident.status}"></dd>
+
+    <dt>Assignment date</dt>
+    <dd th:if="${incident.affectationDate != null}"
+        th:text="${#temporals.format(incident.affectationDate, 'dd/MM/yyyy HH:mm')}"></dd>
+    <dd th:unless="${incident.affectationDate != null}">-</dd>
+
+    <dt>Resolution date</dt>
+    <dd th:if="${incident.resolutionDate != null}"
+        th:text="${#temporals.format(incident.resolutionDate, 'dd/MM/yyyy HH:mm')}"></dd>
+    <dd th:unless="${incident.resolutionDate != null}">-</dd>
+
+    <dt>Equipment</dt>
+    <dd>
+        <a th:href="@{/equipments/{id}(id=${incident.equipment.id})}"
+           th:text="${incident.equipment.reference + ' - ' + incident.equipment.label}"></a>
+    </dd>
+
+    <dt>Provider</dt>
+    <dd th:if="${incident.provider != null}" th:text="${incident.provider.name}"></dd>
+    <dd th:unless="${incident.provider != null}">-</dd>
+
+    <dt>Declarant</dt>
+    <dd th:if="${incident.declarant != null}" th:text="${incident.declarant.firstName}"></dd>
+    <dd th:unless="${incident.declarant != null}">-</dd>
+</dl>
+
+<form th:if="${incident.status.name() != 'RESOLU'}"
+      th:action="@{/incidents/{id}/provider(id=${incident.id})}"
+      method="post">
+    <label for="provider">Assign or reassign provider</label>
+    <select id="provider" name="providerId" required>
+        <option value="">Select a provider</option>
+        <option th:each="provider : ${providers}"
+                th:value="${provider.id}"
+                th:text="${provider.name}"
+                th:selected="${incident.provider != null and provider.id == incident.provider.id}">
+        </option>
+    </select>
+    <button type="submit">Save provider</button>
+</form>
+
+</body>
+</html>

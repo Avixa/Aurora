@@ -14,18 +14,10 @@
 <p><a th:href="@{/equipments/{id}/incidents/new(id=${equipment.id})}">Report an incident</a></p>
 
 <h2>Ongoing incidents</h2>
-<ul>
-    <li th:each="i : ${ongoingIncidents}"
-        th:text="${#temporals.format(i.openingDate, 'dd/MM/yyyy HH:mm')} + ' - ' + ${i.description}"></li>
-    <li th:if="${#lists.isEmpty(ongoingIncidents)}">None</li>
-</ul>
+<div th:replace="~{fragments/incidentTable :: incidentTable(${ongoingIncidents}, false)}"></div>
 
 <h2>Past incidents</h2>
-<ul>
-    <li th:each="i : ${pastIncidents}"
-        th:text="${#temporals.format(i.openingDate, 'dd/MM/yyyy')} + ' → ' + ${#temporals.format(i.resolutionDate, 'dd/MM/yyyy')} + ' - ' + ${i.description}"></li>
-    <li th:if="${#lists.isEmpty(pastIncidents)}">None</li>
-</ul>
+<div th:replace="~{fragments/incidentTable :: incidentTable(${pastIncidents}, false)}"></div>
 
 </body>
 </html>

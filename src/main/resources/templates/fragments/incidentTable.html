@@ -1,0 +1,39 @@
+<div th:fragment="incidentTable(incidents, showEquipment)" xmlns:th="http://www.thymeleaf.org">
+    <table border="1">
+        <thead>
+        <tr>
+            <th th:if="${showEquipment}">Equipment</th>
+            <th>Description</th>
+            <th>Opening date</th>
+            <th>Status</th>
+            <th>Provider</th>
+            <th>Declarant</th>
+            <th>Resolution date</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="incident : ${incidents}">
+            <td th:if="${showEquipment}">
+                <a th:href="@{/equipments/{id}(id=${incident.equipment.id})}"
+                   th:text="${incident.equipment.reference}"></a>
+            </td>
+            <td>
+                <a th:href="@{/incidents/{id}(id=${incident.id})}"
+                   th:text="${incident.description}"></a>
+            </td>
+            <td th:text="${#temporals.format(incident.openingDate, 'dd/MM/yyyy HH:mm')}"></td>
+            <td th:text="${incident.status}"></td>
+            <td th:if="${incident.provider != null}" th:text="${incident.provider.name}"></td>
+            <td th:unless="${incident.provider != null}">-</td>
+            <td th:if="${incident.declarant != null}" th:text="${incident.declarant.firstName}"></td>
+            <td th:unless="${incident.declarant != null}">-</td>
+            <td th:if="${incident.resolutionDate != null}"
+                th:text="${#temporals.format(incident.resolutionDate, 'dd/MM/yyyy HH:mm')}"></td>
+            <td th:unless="${incident.resolutionDate != null}">-</td>
+        </tr>
+        <tr th:if="${#lists.isEmpty(incidents)}">
+            <td th:colspan="${showEquipment ? 7 : 6}">None</td>
+        </tr>
+        </tbody>
+    </table>
+</div>

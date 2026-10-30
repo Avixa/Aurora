@@ -2,6 +2,7 @@ package altn72.aurora.controleur;
 
 import altn72.aurora.modele.auth.UserSession;
 import altn72.aurora.modele.incident.Incident;
+import altn72.aurora.modele.provider.ProviderRepository;
 import altn72.aurora.service.EquipmentService;
 import altn72.aurora.service.IncidentService;
 import jakarta.validation.Valid;
@@ -20,10 +21,14 @@ public class IncidentController {
 
     private final IncidentService incidentService;
     private final EquipmentService equipmentService;
+    private final ProviderRepository providerRepository;
 
-    public IncidentController(IncidentService incidentService, EquipmentService equipmentService) {
+    public IncidentController(IncidentService incidentService,
+                              EquipmentService equipmentService,
+                              ProviderRepository providerRepository) {
         this.incidentService = incidentService;
         this.equipmentService = equipmentService;
+        this.providerRepository = providerRepository;
     }
 
     // Only these two fields can be bound from the form
@@ -61,12 +66,20 @@ public class IncidentController {
     @GetMapping("/incidents/{incidentId}")
     public String show(@PathVariable Long incidentId, Model model) {
         model.addAttribute("incident", incidentService.getIncident(incidentId));
+        model.addAttribute("providers", providerRepository.findAll());
         return "incidentDetails";
     }
 
     @GetMapping("/incidents")
     public String showAll(Model model){
         model.addAttribute("incidents", incidentService.getIncidents());
-        return "incidentTable";
+        return "fragments/incidentTable";
+    }
+
+    @PostMapping("/incidents/{incidentId}/provider")
+    public String assignProvider(@PathVariable Long incidentId,
+                                 @RequestParam Long providerId) {
+        incidentService.assignProvider(incidentId, providerId);
+        return "redirect:/incidents/" + incidentId;
     }
 }
