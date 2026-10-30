@@ -16,18 +16,12 @@
   <form th:action="@{/equipments/{id}/incidents(id=${equipment.id})}"
         th:object="${newIncident}" method="POST">
 
-    <div th:if="${#fields.hasErrors('*')}" class="alert alert-danger w-50">
-      The form contains errors, please correct them.
-    </div>
-
-    <label class="form-label" for="description">Description</label>
     <textarea th:field="*{description}" rows="4"
               class="form-control mb-1 w-50"
               th:classappend="${#fields.hasErrors('description')} ? 'is-invalid'"></textarea>
     <div class="text-danger mb-3" th:if="${#fields.hasErrors('description')}"
          th:errors="*{description}"></div>
 
-    <label class="form-label" for="openingDate">Opening date</label>
     <input type="datetime-local" th:field="*{openingDate}"
            class="form-control mb-1 w-50"
            th:classappend="${#fields.hasErrors('openingDate')} ? 'is-invalid'">

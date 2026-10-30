@@ -11,6 +11,8 @@
 <p>State: <span th:text="${equipment.operatingState}"></span></p>
 <p>Description: <span th:text="${equipment.description}"></span></p>
 
+<p><a th:href="@{/equipments/{id}/incidents/new(id=${equipment.id})}">Report an incident</a></p>
+
 <h2>Ongoing incidents</h2>
 <ul>
     <li th:each="i : ${ongoingIncidents}"
