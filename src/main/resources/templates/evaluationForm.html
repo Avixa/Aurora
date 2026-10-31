@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Évaluer le prestataire</title>
+</head>
+<body>
+<div th:replace="~{fragments/header :: header}"></div>
+
+<h1>Évaluer le prestataire</h1>
+<p>Incident : <a th:href="@{/incidents/{id}(id=${incident.id})}" th:text="${incident.description}"></a></p>
+<p>Prestataire : <strong th:text="${incident.provider.name}"></strong></p>
+
+<form th:action="@{/incidents/{id}/evaluation(id=${incident.id})}" th:object="${newEvaluation}" method="post">
+    <label>Note
+        <select th:field="*{rating}">
+            <option value="">Choisir</option>
+            <option th:each="n : ${#numbers.sequence(1, 5)}" th:value="${n}" th:text="${n}"></option>
+        </select>
+    </label>
+    <div th:if="${#fields.hasErrors('rating')}" th:errors="*{rating}" style="color:red"></div>
+
+    <label>Commentaire (facultatif)
+        <textarea th:field="*{comment}" rows="3"></textarea>
+    </label>
+    <div th:if="${#fields.hasErrors('comment')}" th:errors="*{comment}" style="color:red"></div>
+
+    <button type="submit">Enregistrer</button>
+</form>
+</body>
+</html>

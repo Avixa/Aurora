@@ -2,6 +2,7 @@ package altn72.aurora.controleur;
 
 import altn72.aurora.config.RequiresPermission;
 import altn72.aurora.modele.auth.Permission;
+import altn72.aurora.service.EvaluationService;
 
 import altn72.aurora.modele.auth.UserSession;
 import altn72.aurora.modele.incident.Incident;
@@ -25,13 +26,16 @@ public class IncidentController {
     private final IncidentService incidentService;
     private final EquipmentService equipmentService;
     private final ProviderRepository providerRepository;
+    private final EvaluationService evaluationService;
 
     public IncidentController(IncidentService incidentService,
                               EquipmentService equipmentService,
-                              ProviderRepository providerRepository) {
+                              ProviderRepository providerRepository,
+                              EvaluationService evaluationService) {
         this.incidentService = incidentService;
         this.equipmentService = equipmentService;
         this.providerRepository = providerRepository;
+        this.evaluationService = evaluationService;
     }
 
     // Only these two fields can be bound from the form
@@ -70,8 +74,11 @@ public class IncidentController {
 
     @GetMapping("/incidents/{incidentId}")
     public String show(@PathVariable Long incidentId, Model model) {
-        model.addAttribute("incident", incidentService.getIncident(incidentId));
+        Incident incident = incidentService.getIncident(incidentId);
+        model.addAttribute("incident", incident);
         model.addAttribute("providers", providerRepository.findAll());
+        model.addAttribute("evaluation", evaluationService.getEvaluation(incidentId).orElse(null));
+        model.addAttribute("evaluable", evaluationService.isEvaluable(incident));
         return "incidentDetails";
     }
 
@@ -86,5 +93,18 @@ public class IncidentController {
                                  @RequestParam Long providerId) {
         incidentService.assignProvider(incidentId, providerId);
         return "redirect:/incidents/" + incidentId;
+    }
+
+    @RequiresPermission(Permission.RESOLVE_INCIDENT)
+    @PostMapping("/incidents/{incidentId}/resolution")
+    public String resolve(@PathVariable Long incidentId) {
+        incidentService.resolve(incidentId);
+        return "redirect:/incidents/" + incidentId;
+    }
+
+    @GetMapping("/incidents/history")
+    public String showHistory(Model model) {
+        model.addAttribute("incidents", incidentService.getResolvedIncidents());
+        return "incidentHistory";
     }
 }

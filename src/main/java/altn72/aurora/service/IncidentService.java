@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.time.Clock;
 
 @Service
 @Transactional(readOnly = true)
@@ -22,15 +23,16 @@ public class IncidentService {
     private final EquipmentRepository equipmentRepository;
     private final UserRepository userRepository;
     private final ProviderRepository providerRepository;
+    private final Clock clock;
 
-    public IncidentService(IncidentRepository incidentRepository,
-                           EquipmentRepository equipmentRepository,
-                           UserRepository userRepository,
-                           ProviderRepository providerRepository) {
+    public IncidentService(IncidentRepository incidentRepository, EquipmentRepository equipmentRepository,
+                           UserRepository userRepository, ProviderRepository providerRepository,
+                           Clock clock) {
         this.incidentRepository = incidentRepository;
         this.equipmentRepository = equipmentRepository;
         this.userRepository = userRepository;
         this.providerRepository = providerRepository;
+        this.clock = clock;
     }
 
     // F4
@@ -84,7 +86,7 @@ public class IncidentService {
     @ResponseStatus(HttpStatus.CONFLICT)
     public static class ResolvedIncidentException extends RuntimeException {
         public ResolvedIncidentException(Long id) {
-            super("Resolved incident " + id + " cannot be assigned");
+            super("L'incident " + id + " est déjà résolu.");
         }
     }
 
@@ -92,5 +94,21 @@ public class IncidentService {
         public IncidentNotFoundException(Long id) {
             super("Incident " + id + " does not exist");
         }
+    }
+
+    // records the resolution date; a resolved incident cannot be resolved again
+    @Transactional
+    public Incident resolve(Long incidentId) {
+        Incident incident = getIncident(incidentId);
+        if (incident.getStatus() == Incident.StatusEnum.RESOLU) {
+            throw new ResolvedIncidentException(incidentId);
+        }
+        incident.setStatus(Incident.StatusEnum.RESOLU);
+        incident.setResolutionDate(LocalDateTime.now(clock));
+        return incidentRepository.save(incident);
+    }
+
+    public List<Incident> getResolvedIncidents() {
+        return incidentRepository.findResolvedWithDetails();
     }
 }

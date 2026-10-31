@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Historique des incidents résolus</title>
+</head>
+<body>
+<div th:replace="~{fragments/header :: header}"></div>
+
+<h1>Historique des incidents résolus</h1>
+<p>Du plus récemment résolu au plus ancien.</p>
+
+<div th:replace="~{fragments/incidentTable :: incidentTable(${incidents}, true)}"></div>
+</body>
+</html>

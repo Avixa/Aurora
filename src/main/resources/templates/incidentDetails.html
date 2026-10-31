@@ -60,5 +60,24 @@
     <button type="submit">Save provider</button>
 </form>
 
+<form th:if="${incident.status.name() != 'RESOLU' and session.loggedUser.can('RESOLVE_INCIDENT')}"
+      th:action="@{/incidents/{id}/resolution(id=${incident.id})}"
+      method="post">
+    <button type="submit">Déclarer l'incident résolu</button>
+</form>
+
+<h2>Évaluation du prestataire</h2>
+<p th:if="${evaluation != null}">
+    Note : <strong th:text="${evaluation.rating} + ' / 5'"></strong>
+    <span th:unless="${#strings.isEmpty(evaluation.comment)}">
+        – <span th:text="${evaluation.comment}"></span>
+    </span>
+    (le <span th:text="${#temporals.format(evaluation.evaluationDate, 'dd/MM/yyyy HH:mm')}"></span>)
+</p>
+<p th:if="${evaluation == null}">Aucune évaluation.</p>
+
+<a th:if="${evaluable and session.loggedUser.can('EVALUATE_PROVIDER')}"
+   th:href="@{/incidents/{id}/evaluation/new(id=${incident.id})}">Évaluer le prestataire</a>
+
 </body>
 </html>
