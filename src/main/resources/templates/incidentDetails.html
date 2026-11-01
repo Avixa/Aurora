@@ -36,6 +36,12 @@
            th:text="${incident.equipment.reference + ' - ' + incident.equipment.label}"></a>
     </dd>
 
+    <dt>Station</dt>
+    <dd th:text="${incident.equipment.station.name}"></dd>
+
+    <dt>Durée d'ouverture</dt>
+    <dd th:text="${hoursOpen} + ' h'"></dd>
+
     <dt>Provider</dt>
     <dd th:if="${incident.provider != null}" th:text="${incident.provider.name}"></dd>
     <dd th:unless="${incident.provider != null}">-</dd>
@@ -43,6 +49,9 @@
     <dt>Declarant</dt>
     <dd th:if="${incident.declarant != null}" th:text="${incident.declarant.firstName}"></dd>
     <dd th:unless="${incident.declarant != null}">-</dd>
+
+    <a th:if="${incident.status.name() != 'RESOLU' and session.loggedUser.can('EDIT_INCIDENT')}"
+       th:href="@{/incidents/{id}/edit(id=${incident.id})}">Modifier la description</a>
 </dl>
 
 <form th:if="${incident.status.name() != 'RESOLU'}"

@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Modifier l'incident</title>
+</head>
+<body>
+<div th:replace="~{fragments/header :: header}"></div>
+
+<h1>Modifier l'incident</h1>
+<p>Équipement :
+    <strong th:text="${incident.equipment.reference} + ' - ' + ${incident.equipment.label}"></strong>
+</p>
+
+<form th:action="@{/incidents/{id}/edit(id=${incident.id})}" th:object="${editForm}" method="post">
+    <label>Description
+        <textarea th:field="*{description}" rows="4"></textarea>
+    </label>
+    <div th:if="${#fields.hasErrors('description')}" th:errors="*{description}" style="color:red"></div>
+
+    <button type="submit">Enregistrer</button>
+    <a th:href="@{/incidents/{id}(id=${incident.id})}">Annuler</a>
+</form>
+</body>
+</html>

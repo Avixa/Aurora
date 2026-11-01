@@ -5,8 +5,10 @@ import java.util.Set;
 // each protected action and the profiles allowed to perform it
 public enum Permission {
     DECLARE_INCIDENT("déclarer un incident", User.Profile.AGENT),
+    EDIT_INCIDENT("modifier un incident", User.Profile.AGENT),
     RESOLVE_INCIDENT("déclarer un incident résolu", User.Profile.AGENT),
     EVALUATE_PROVIDER("évaluer un prestataire", User.Profile.AGENT);
+
 
     private final String action;
     private final Set<User.Profile> grantedProfiles;

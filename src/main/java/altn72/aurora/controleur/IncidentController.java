@@ -44,7 +44,7 @@ public class IncidentController {
         binder.setAllowedFields("description", "openingDate");
     }
 
-    // F4: form
+    // form
     @RequiresPermission(Permission.DECLARE_INCIDENT)
     @GetMapping("/equipments/{equipmentId}/incidents/new")
     public String showForm(@PathVariable Long equipmentId, Model model) {
@@ -55,7 +55,7 @@ public class IncidentController {
         return "incidentForm";
     }
 
-    // F4: creation
+    // creation
     @RequiresPermission(Permission.DECLARE_INCIDENT)
     @PostMapping("/equipments/{equipmentId}/incidents")
     public String declare(@PathVariable Long equipmentId,
@@ -79,6 +79,7 @@ public class IncidentController {
         model.addAttribute("providers", providerRepository.findAll());
         model.addAttribute("evaluation", evaluationService.getEvaluation(incidentId).orElse(null));
         model.addAttribute("evaluable", evaluationService.isEvaluable(incident));
+        model.addAttribute("hoursOpen", incidentService.getHoursOpen(incident));
         return "incidentDetails";
     }
 
@@ -106,5 +107,33 @@ public class IncidentController {
     public String showHistory(Model model) {
         model.addAttribute("incidents", incidentService.getResolvedIncidents());
         return "incidentHistory";
+    }
+
+    // form
+    @RequiresPermission(Permission.EDIT_INCIDENT)
+    @GetMapping("/incidents/{incidentId}/edit")
+    public String showEditForm(@PathVariable Long incidentId, Model model) {
+        Incident incident = incidentService.getEditableIncident(incidentId);
+        IncidentEditForm form = new IncidentEditForm();
+        form.setDescription(incident.getDescription());
+        model.addAttribute("incident", incident);
+        model.addAttribute("editForm", form);
+        return "incidentEditForm";
+    }
+
+    // update
+    @RequiresPermission(Permission.EDIT_INCIDENT)
+    @PostMapping("/incidents/{incidentId}/edit")
+    public String update(@PathVariable Long incidentId,
+                         @Valid @ModelAttribute("editForm") IncidentEditForm form,
+                         BindingResult bindingResult,
+                         Model model) {
+
+        if (bindingResult.hasErrors()) {
+            model.addAttribute("incident", incidentService.getEditableIncident(incidentId));
+            return "incidentEditForm";
+        }
+        incidentService.updateDescription(incidentId, form.getDescription());
+        return "redirect:/incidents/" + incidentId;
     }
 }

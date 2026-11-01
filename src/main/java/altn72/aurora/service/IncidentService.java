@@ -12,6 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
 import java.time.LocalDateTime;
+import java.time.Duration;
 import java.util.List;
 import java.time.Clock;
 
@@ -90,9 +91,10 @@ public class IncidentService {
         }
     }
 
+    @ResponseStatus(HttpStatus.NOT_FOUND)
     private static class IncidentNotFoundException extends RuntimeException {
         public IncidentNotFoundException(Long id) {
-            super("Incident " + id + " does not exist");
+            super("L'incident " + id + " n'existe pas.");
         }
     }
 
@@ -110,5 +112,30 @@ public class IncidentService {
 
     public List<Incident> getResolvedIncidents() {
         return incidentRepository.findResolvedWithDetails();
+    }
+
+    // time open until resolution, or until now if the incident is still active
+    public long getHoursOpen(Incident incident) {
+        LocalDateTime end = incident.getResolutionDate() != null
+                ? incident.getResolutionDate()
+                : LocalDateTime.now(clock);
+        return Duration.between(incident.getOpeningDate(), end).toHours();
+    }
+
+    // an incident can be modified as long as it is not resolved
+    public Incident getEditableIncident(Long incidentId) {
+        Incident incident = getIncident(incidentId);
+        if (incident.getStatus() == Incident.StatusEnum.RESOLU) {
+            throw new ResolvedIncidentException(incidentId);
+        }
+        return incident;
+    }
+
+    // the description is the only modifiable field
+    @Transactional
+    public Incident updateDescription(Long incidentId, String description) {
+        Incident incident = getEditableIncident(incidentId);
+        incident.setDescription(description.trim());
+        return incidentRepository.save(incident);
     }
 }
