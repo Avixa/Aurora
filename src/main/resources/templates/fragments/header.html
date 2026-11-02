@@ -1,10 +1,60 @@
-<div th:fragment="header" xmlns:th="http://www.thymeleaf.org"
-     th:if="${session.loggedUser != null}"
-     style="text-align:right">
-    Bonjour <span th:text="${session.loggedUser.firstName()}"></span>
-    (<span th:text="${session.loggedUser.profile().label}"></span>)
-    |
-    <form th:action="@{/logout}" method="post" style="display:inline">
-        <button type="submit">Déconnectez vous</button>
-    </form>
+<div th:fragment="header" xmlns:th="http://www.thymeleaf.org">
+    <!-- Inline CSS for Header Fragment -->
+    <style th:inline="css">
+        .app-header {
+            background-color: #ffffff;
+            border-bottom: 1px solid #e9ecef;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+            padding: 0.75rem 0;
+            margin-bottom: 1.5rem;
+        }
+
+        .user-badge {
+            font-weight: 500;
+            color: #334155;
+            font-size: 0.925rem;
+        }
+
+        .user-role {
+            color: #64748b;
+            font-size: 0.85rem;
+        }
+
+        .btn-logout {
+            color: #dc2626;
+            border-color: #fecaca;
+            background-color: #fef2f2;
+            font-weight: 500;
+            transition: all 0.2s ease;
+        }
+
+        .btn-logout:hover {
+            color: #ffffff;
+            background-color: #dc2626;
+            border-color: #dc2626;
+        }
+    </style>
+
+    <header th:if="${session.loggedUser != null}" class="app-header">
+        <div class="container d-flex justify-content-between align-items-center">
+            <!-- App Brand / Navigation Home Link -->
+            <a th:href="@{/dashboard}" class="fw-bold text-dark text-decoration-none fs-5">
+                🚆 Aurora
+            </a>
+
+            <!-- User Info & Logout -->
+            <div class="d-flex align-items-center gap-3">
+                <span class="user-badge">
+                    Bonjour <strong th:text="${session.loggedUser.firstName()}"></strong>
+                    <span class="user-role" th:text="'(' + ${session.loggedUser.profile().label} + ')'"></span>
+                </span>
+
+                <form th:action="@{/logout}" method="post" class="m-0">
+                    <button type="submit" class="btn btn-sm btn-logout">
+                        Déconnexion
+                    </button>
+                </form>
+            </div>
+        </div>
+    </header>
 </div>

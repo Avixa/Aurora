@@ -1,92 +1,226 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html lang="fr" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Incident Details</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Détails de l'incident</title>
+
+    <!-- Bootstrap 5 CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
+
+    <!-- Custom Embedded CSS for Incident Details Page -->
+    <style>
+        :root {
+            --primary-color: #0d6efd;
+            --bg-light: #f8f9fa;
+            --card-bg: #ffffff;
+            --border-color: #e9ecef;
+            --card-border-radius: 10px;
+            --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.05);
+            --text-main: #334155;
+            --text-dark: #1a202c;
+            --text-muted: #64748b;
+        }
+
+        body {
+            background-color: var(--bg-light);
+            color: var(--text-main);
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+        }
+
+        h1 {
+            font-weight: 700;
+            color: var(--text-dark);
+            letter-spacing: -0.5px;
+            margin-bottom: 1.25rem;
+        }
+
+        h2 {
+            font-weight: 600;
+            font-size: 1.35rem;
+            color: var(--text-dark);
+            margin-top: 2rem;
+            margin-bottom: 1rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid var(--border-color);
+        }
+
+        a {
+            color: #0284c7;
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.15s ease;
+        }
+
+        a:hover {
+            color: #0369a1;
+            text-decoration: underline;
+        }
+
+        /* Incident Details Grid Card */
+        dl {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: var(--card-border-radius);
+            padding: 1.5rem;
+            box-shadow: var(--shadow-sm);
+            display: grid;
+            grid-template-columns: minmax(160px, 220px) 1fr;
+            gap: 0.85rem 1.5rem;
+            align-items: baseline;
+            margin-bottom: 1.5rem;
+        }
+
+        dt {
+            font-weight: 600;
+            color: var(--text-muted);
+            font-size: 0.875rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        dd {
+            margin-bottom: 0;
+            color: var(--text-dark);
+            font-weight: 500;
+        }
+
+        /* Action Links inside <dl> */
+        .edit-link-container {
+            grid-column: 1 / -1;
+            padding-top: 0.75rem;
+            border-top: 1px dashed var(--border-color);
+            margin-top: 0.5rem;
+        }
+
+        /* Action Forms Card */
+        .action-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: var(--card-border-radius);
+            padding: 1.25rem;
+            box-shadow: var(--shadow-sm);
+            margin-bottom: 1.25rem;
+        }
+
+        /* Evaluation Section Box */
+        .evaluation-box {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: var(--card-border-radius);
+            padding: 1.25rem;
+            box-shadow: var(--shadow-sm);
+        }
+    </style>
 </head>
 <body>
 
 <div th:replace="~{fragments/header :: header}"></div>
 
-<h1>Incident Details</h1>
+<main class="container mt-4 mb-5">
 
-<dl>
-    <dt>Description</dt>
-    <dd th:text="${incident.description}"></dd>
+    <h1>Détails de l'incident</h1>
 
-    <dt>Opening date</dt>
-    <dd th:text="${#temporals.format(incident.openingDate, 'dd/MM/yyyy HH:mm')}"></dd>
+    <dl>
+        <dt>Description</dt>
+        <dd th:text="${incident.description}"></dd>
 
-    <dt>Status</dt>
-    <dd th:text="${incident.status}"></dd>
+        <dt>Date d'ouverture</dt>
+        <dd th:text="${#temporals.format(incident.openingDate, 'dd/MM/yyyy HH:mm')}"></dd>
 
-    <dt>Assignment date</dt>
-    <dd th:if="${incident.affectationDate != null}"
-        th:text="${#temporals.format(incident.affectationDate, 'dd/MM/yyyy HH:mm')}"></dd>
-    <dd th:unless="${incident.affectationDate != null}">-</dd>
+        <dt>Statut</dt>
+        <dd th:text="${incident.status}"></dd>
 
-    <dt>Resolution date</dt>
-    <dd th:if="${incident.resolutionDate != null}"
-        th:text="${#temporals.format(incident.resolutionDate, 'dd/MM/yyyy HH:mm')}"></dd>
-    <dd th:unless="${incident.resolutionDate != null}">-</dd>
+        <dt>Date d'affectation</dt>
+        <dd th:if="${incident.affectationDate != null}"
+            th:text="${#temporals.format(incident.affectationDate, 'dd/MM/yyyy HH:mm')}"></dd>
+        <dd th:unless="${incident.affectationDate != null}">-</dd>
 
-    <dt>Equipment</dt>
-    <dd>
-        <a th:href="@{/equipments/{id}(id=${incident.equipment.id})}"
-           th:text="${incident.equipment.reference + ' - ' + incident.equipment.label}"></a>
-    </dd>
+        <dt>Date de résolution</dt>
+        <dd th:if="${incident.resolutionDate != null}"
+            th:text="${#temporals.format(incident.resolutionDate, 'dd/MM/yyyy HH:mm')}"></dd>
+        <dd th:unless="${incident.resolutionDate != null}">-</dd>
 
-    <dt>Station</dt>
-    <dd th:text="${incident.equipment.station.name}"></dd>
+        <dt>Équipement</dt>
+        <dd>
+            <a th:href="@{/equipments/{id}(id=${incident.equipment.id})}"
+               th:text="${incident.equipment.reference + ' - ' + incident.equipment.label}"></a>
+        </dd>
 
-    <dt>Durée d'ouverture</dt>
-    <dd th:text="${hoursOpen} + ' h'"></dd>
+        <dt>Station</dt>
+        <dd th:text="${incident.equipment.station.name}"></dd>
 
-    <dt>Provider</dt>
-    <dd th:if="${incident.provider != null}" th:text="${incident.provider.name}"></dd>
-    <dd th:unless="${incident.provider != null}">-</dd>
+        <dt>Durée d'ouverture</dt>
+        <dd th:text="${hoursOpen} + ' h'"></dd>
 
-    <dt>Declarant</dt>
-    <dd th:if="${incident.declarant != null}" th:text="${incident.declarant.firstName}"></dd>
-    <dd th:unless="${incident.declarant != null}">-</dd>
+        <dt>Prestataire</dt>
+        <dd th:if="${incident.provider != null}" th:text="${incident.provider.name}"></dd>
+        <dd th:unless="${incident.provider != null}">-</dd>
 
-    <a th:if="${incident.status.name() != 'RESOLU' and session.loggedUser.can('EDIT_INCIDENT')}"
-       th:href="@{/incidents/{id}/edit(id=${incident.id})}">Modifier la description</a>
-</dl>
+        <dt>Déclarant</dt>
+        <dd th:if="${incident.declarant != null}" th:text="${incident.declarant.firstName}"></dd>
+        <dd th:unless="${incident.declarant != null}">-</dd>
 
-<form th:if="${incident.status.name() != 'RESOLU'}"
-      th:action="@{/incidents/{id}/provider(id=${incident.id})}"
-      method="post">
-    <label for="provider">Assign or reassign provider</label>
-    <select id="provider" name="providerId" required>
-        <option value="">Select a provider</option>
-        <option th:each="provider : ${providers}"
-                th:value="${provider.id}"
-                th:text="${provider.name}"
-                th:selected="${incident.provider != null and provider.id == incident.provider.id}">
-        </option>
-    </select>
-    <button type="submit">Save provider</button>
-</form>
+        <div th:if="${incident.status.name() != 'RESOLU' and session.loggedUser.can('EDIT_INCIDENT')}"
+             class="edit-link-container">
+            <a th:href="@{/incidents/{id}/edit(id=${incident.id})}" class="btn btn-sm btn-outline-primary">
+                ✏️ Modifier la description
+            </a>
+        </div>
+    </dl>
 
-<form th:if="${incident.status.name() != 'RESOLU' and session.loggedUser.can('RESOLVE_INCIDENT')}"
-      th:action="@{/incidents/{id}/resolution(id=${incident.id})}"
-      method="post">
-    <button type="submit">Déclarer l'incident résolu</button>
-</form>
+    <div th:if="${incident.status.name() != 'RESOLU'}" class="action-card mb-3">
+        <form th:action="@{/incidents/{id}/provider(id=${incident.id})}" method="post" class="row g-2 align-items-center">
+            <div class="col-auto">
+                <label for="provider" class="col-form-label fw-semibold">Affecter un prestataire :</label>
+            </div>
+            <div class="col-auto">
+                <select id="provider" name="providerId" class="form-select form-select-sm" required>
+                    <option value="">Sélectionner un prestataire</option>
+                    <option th:each="provider : ${providers}"
+                            th:value="${provider.id}"
+                            th:text="${provider.name}"
+                            th:selected="${incident.provider != null and provider.id == incident.provider.id}">
+                    </option>
+                </select>
+            </div>
+            <div class="col-auto">
+                <button type="submit" class="btn btn-sm btn-primary">Enregistrer</button>
+            </div>
+        </form>
+    </div>
 
-<h2>Évaluation du prestataire</h2>
-<p th:if="${evaluation != null}">
-    Note : <strong th:text="${evaluation.rating} + ' / 5'"></strong>
-    <span th:unless="${#strings.isEmpty(evaluation.comment)}">
-        – <span th:text="${evaluation.comment}"></span>
-    </span>
-    (le <span th:text="${#temporals.format(evaluation.evaluationDate, 'dd/MM/yyyy HH:mm')}"></span>)
-</p>
-<p th:if="${evaluation == null}">Aucune évaluation.</p>
+    <!-- Incident Resolution Button Form -->
+    <div th:if="${incident.status.name() != 'RESOLU' and session.loggedUser.can('RESOLVE_INCIDENT')}" class="action-card mb-4">
+        <form th:action="@{/incidents/{id}/resolution(id=${incident.id})}" method="post" class="m-0">
+            <button type="submit" class="btn btn-success">
+                ✓ Déclarer l'incident résolu
+            </button>
+        </form>
+    </div>
 
-<a th:if="${evaluable and session.loggedUser.can('EVALUATE_PROVIDER')}"
-   th:href="@{/incidents/{id}/evaluation/new(id=${incident.id})}">Évaluer le prestataire</a>
+    <h2>Évaluation du prestataire</h2>
+
+    <div class="evaluation-box">
+        <p class="mb-2" th:if="${evaluation != null}">
+            Note : <strong th:text="${evaluation.rating} + ' / 5'"></strong>
+            <span th:unless="${#strings.isEmpty(evaluation.comment)}">
+                – <span th:text="${evaluation.comment}"></span>
+            </span>
+            <span class="text-muted fs-7">
+                (le <span th:text="${#temporals.format(evaluation.evaluationDate, 'dd/MM/yyyy HH:mm')}"></span>)
+            </span>
+        </p>
+        <p class="mb-2 text-muted" th:if="${evaluation == null}">Aucune évaluation pour le moment.</p>
+
+        <a th:if="${evaluable and session.loggedUser.can('EVALUATE_PROVIDER')}"
+           th:href="@{/incidents/{id}/evaluation/new(id=${incident.id})}"
+           class="btn btn-sm btn-outline-secondary mt-1">
+            ⭐ Évaluer le prestataire
+        </a>
+    </div>
+
+</main>
 
 </body>
 </html>
