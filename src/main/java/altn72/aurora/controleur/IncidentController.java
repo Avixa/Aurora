@@ -86,7 +86,7 @@ public class IncidentController {
     @GetMapping("/incidents")
     public String showAll(Model model){
         model.addAttribute("incidents", incidentService.getIncidents());
-        return "fragments/incidentTable";
+        return "incidents";
     }
 
     @PostMapping("/incidents/{incidentId}/provider")

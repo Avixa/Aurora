@@ -1,39 +1,123 @@
 <div th:fragment="incidentTable(incidents, showEquipment)" xmlns:th="http://www.thymeleaf.org">
-    <table border="1">
-        <thead>
-        <tr>
-            <th th:if="${showEquipment}">Equipment</th>
-            <th>Description</th>
-            <th>Opening date</th>
-            <th>Status</th>
-            <th>Provider</th>
-            <th>Declarant</th>
-            <th>Resolution date</th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr th:each="incident : ${incidents}">
-            <td th:if="${showEquipment}">
-                <a th:href="@{/equipments/{id}(id=${incident.equipment.id})}"
-                   th:text="${incident.equipment.reference}"></a>
-            </td>
-            <td>
-                <a th:href="@{/incidents/{id}(id=${incident.id})}"
-                   th:text="${incident.description}"></a>
-            </td>
-            <td th:text="${#temporals.format(incident.openingDate, 'dd/MM/yyyy HH:mm')}"></td>
-            <td th:text="${incident.status}"></td>
-            <td th:if="${incident.provider != null}" th:text="${incident.provider.name}"></td>
-            <td th:unless="${incident.provider != null}">-</td>
-            <td th:if="${incident.declarant != null}" th:text="${incident.declarant.firstName}"></td>
-            <td th:unless="${incident.declarant != null}">-</td>
-            <td th:if="${incident.resolutionDate != null}"
-                th:text="${#temporals.format(incident.resolutionDate, 'dd/MM/yyyy HH:mm')}"></td>
-            <td th:unless="${incident.resolutionDate != null}">-</td>
-        </tr>
-        <tr th:if="${#lists.isEmpty(incidents)}">
-            <td th:colspan="${showEquipment ? 7 : 6}">None</td>
-        </tr>
-        </tbody>
-    </table>
+    <!-- Inline CSS aligned with Equipment Page -->
+    <style th:inline="css">
+        :root {
+            --primary-color: #0d6efd;
+            --bg-light: #f8f9fa;
+            --card-bg: #ffffff;
+            --border-color: #e9ecef;
+            --card-border-radius: 10px;
+            --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.05);
+            --text-main: #334155;
+            --text-dark: #1a202c;
+            --text-muted: #64748b;
+        }
+
+        .table, table {
+            width: 100%;
+            background: var(--card-bg);
+            border-radius: var(--card-border-radius);
+            overflow: hidden;
+            box-shadow: var(--shadow-sm);
+            border: 1px solid var(--border-color);
+            margin-top: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .table thead, table thead {
+            background-color: #f1f5f9;
+        }
+
+        .table thead th, table thead th {
+            color: #475569;
+            font-weight: 600;
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            padding: 0.85rem 1rem;
+            border-bottom: 2px solid #e2e8f0;
+        }
+
+        .table tbody tr:hover, table tbody tr:hover {
+            background-color: #f8fafc !important;
+        }
+
+        .table td, table td {
+            padding: 0.85rem 1rem;
+            font-size: 0.925rem;
+            color: var(--text-main);
+            border-top: 1px solid #f1f5f5;
+        }
+
+        .table a {
+            color: #0284c7;
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.15s ease;
+        }
+
+        .table a:hover {
+            color: #0369a1;
+            text-decoration: underline;
+        }
+
+        .badge {
+            font-weight: 600;
+            letter-spacing: 0.3px;
+            padding: 0.4em 0.75em;
+            border-radius: 20px;
+        }
+
+        .empty-cell {
+            background-color: var(--card-bg);
+            text-align: center;
+            color: var(--text-muted);
+            padding: 2rem !important;
+            font-size: 0.95rem;
+        }
+    </style>
+
+    <div class="table-responsive">
+        <table class="table table-striped align-middle">
+            <thead>
+            <tr>
+                <th th:if="${showEquipment}">Équipement</th>
+                <th>Description</th>
+                <th>Date d'ouverture</th>
+                <th>Statut</th>
+                <th>Prestataire</th>
+                <th>Déclarant</th>
+                <th>Date de résolution</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="incident : ${incidents}">
+                <td th:if="${showEquipment}">
+                    <a th:href="@{/equipments/{id}(id=${incident.equipment.id})}"
+                       th:text="${incident.equipment.reference}"></a>
+                </td>
+                <td>
+                    <a th:href="@{/incidents/{id}(id=${incident.id})}"
+                       th:text="${incident.description}"></a>
+                </td>
+                <td th:text="${#temporals.format(incident.openingDate, 'dd/MM/yyyy HH:mm')}"></td>
+                <td>
+                    <span class="badge bg-secondary" th:text="${incident.status}"></span>
+                </td>
+                <td th:if="${incident.provider != null}" th:text="${incident.provider.name}"></td>
+                <td th:unless="${incident.provider != null}" class="text-muted">—</td>
+                <td th:if="${incident.declarant != null}" th:text="${incident.declarant.firstName}"></td>
+                <td th:unless="${incident.declarant != null}" class="text-muted">—</td>
+                <td th:if="${incident.resolutionDate != null}"
+                    th:text="${#temporals.format(incident.resolutionDate, 'dd/MM/yyyy HH:mm')}"></td>
+                <td th:unless="${incident.resolutionDate != null}" class="text-muted">—</td>
+            </tr>
+            <tr th:if="${#lists.isEmpty(incidents)}">
+                <td th:colspan="${showEquipment ? 7 : 6}" class="empty-cell">
+                    Aucun incident pour le moment.
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
 </div>
