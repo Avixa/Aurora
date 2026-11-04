@@ -9,11 +9,12 @@ import java.util.List;
 public interface IncidentEventRepository extends JpaRepository<IncidentEvent, Long> {
 
     // journal of one incident, oldest first, with each author
-    @Query("""
-        SELECT ev FROM IncidentEvent ev
-        LEFT JOIN FETCH ev.author
-        WHERE ev.incident.id = :incidentId
-        ORDER BY ev.eventDate, ev.id
-        """)
+    // the only native SQL query of the project (§7.6), analysed in journal.md
+    @Query(value = """
+        SELECT id, incident_id, auteur_id, date_evenement, type_evenement, detail
+        FROM evenement_incident
+        WHERE incident_id = :incidentId
+        ORDER BY date_evenement, id
+        """, nativeQuery = true)
     List<IncidentEvent> findJournal(@Param("incidentId") Long incidentId);
 }
