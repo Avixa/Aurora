@@ -1,140 +1,147 @@
-# Journal – TP Fil Rouge 5 (ALTN72) – Couche "V" : Thymeleaf
+# Journal — Aurora (ALTN72, 2026-27)
 
-Réponses aux questions du TP 5. Code de référence : ce projet.
+**Groupe :** Arthur NOM, Ethan NOM
 
-## 5.2 Configuration
-- Dépendance spring-boot-starter-thymeleaf déjà dans le pom.xml. À vérifier, rien à ajouter.
-- Apporte : moteur Thymeleaf + intégration Spring MVC.
-- Auto-configuration : templates cherchés dans `src/main/resources/templates`, suffixe `.html`.
+---
 
-## 5.3 Dossiers
-- Templates : `src/main/resources/templates`.
-- Statiques (non transformés) : `src/main/resources/static`.
+## README
 
-## 5.4 Changements dans le contrôleur
-- `@RestController` = `@Controller` + `@ResponseBody`.
-- `@RestController` : la valeur retournée est écrite dans le corps HTTP (JSON).
-- `@Controller` : la valeur retournée (String) est le NOM d'un template.
-- Spring passe ce nom au moteur Thymeleaf, qui produit la page HTML.
-- Données vers la vue : objet `Model`.
-- Conséquence : ResponseEntity (4.9) et @RequestBody (JSON) ne servent plus ici.
+- **Prérequis :** Java 17+, Maven 3.8+, PostgreSQL 14+ `[À COMPLÉTER : vérifier les versions]`
+- **Initialiser la base :** créer une base locale `aurora_db`, puis exécuter `db/create.sql` `[À COMPLÉTER : nom de la base, données de test incluses ?]`
+- **Lancer :**
+  ```bash
+  mvn spring-boot:run
+  ```
 
-## 5.5 – 5.6 Syntaxe, attributs
-- Template = HTML + attributs `th:*`, interprétés côté serveur.
-- `th:*` ou `data-th-*` : équivalents. La 2e forme est du HTML5 valide.
-- `${...}` : expression évaluée sur le Model.
-- `xmlns:th` : facultatif, utile à l'IDE.
+  L'application est accessible sur http://localhost:8080.
+- **Application déployée :** https://github.com/Avixa/Aurora
+- **Comptes de test :**
+  - Responsable d'exploitation : `responsable` / `Responsabel#2026`
+  - Agent : `agent` / `Agent#2026`
+- **Limites connues :**
+  - Authentification développée nous même avec http session (sans Spring Security), donc moins complète et moins éprouvée qu'une solution standard (pas de protection CSRF native, par exemple).
 
-### Droits par profil (§5.6)
+---
 
-| N°    | Fonctionnalité                        | Profil 1 : Responsable d'exploitation | Profil 2 : Agent |
-|-------|---------------------------------------|---------------------------------------|------------------|
-| F2–F3 | Consulter équipements et fiches       | Lecture Seule                         | Lecture Seule    |
-| F4    | Déclarer un incident                  | Interdit                              | Accès Complet    |
-| F5    | Consulter un incident                 | Accès complet                         | Accès Complet    |
-| F6    | Modifier un incident                  | Interdit                              | Accès Complet    |
-| F7    | Affecter ou réaffecter un prestataire | Accès Complet                         | Accès Complet    |
-| F8    | Déclarer un incident résolu           | Interdit                              | Accès Complet    |
-| F9    | Consulter l'historique                | Lecture Seule                         | Lecture Seule    |
-| F10   | Évaluer un prestataire                | Lecture Seule                         | Accès Complet    |
-| F11   | Tableau de bord                       | Lecture Seule                         | Lecture Seule    |
+## ARCHITECTURE
+
+- **Dépôt :** https://github.com/Avixa/Aurora
+- **Schéma :**
+
+Aurora est une application web Spring Boot en architecture en couches, qui répertorie les incidents survenant sur les équipements des gares et les attribue à des prestataires. Les entités principales sont les **stations**, les **équipements**, les **incidents** et les **prestataires**.
+
+- **Controllers (Spring MVC)** : reçoivent les requêtes du navigateur, remplissent le `Model` et délèguent au Server Side Rendering (Thymeleaf) pour produire les pages HTML.
+- **API (`@RestController`)** : expose des endpoints JSON consommés côté navigateur, par exemple pour alimenter la carte Leaflet.
+- **Services** : portent les règles et la logique métier. C'est la seule couche que les contrôleurs et l'API appellent pour accéder aux données.
+- **Persistence (JPA / JPQL)** : repositories Spring Data JPA, qui communiquent avec **PostgreSQL** via JDBC.
+
+---
+
+## TESTS
+
+- **Stratégie :** tests unitaires (JUnit 5 + Mockito) uniquement sur la **couche Services**. C'est là que se concentre la logique métier d'Aurora (règles d'affectation et de réaffectation d'un prestataire, déclaration et résolution d'un incident, évaluation d'un prestataire, etc.). Les repositories sont mockés pour tester chaque règle de façon isolée, rapide et déterministe.
+- **Commande :**
+  ```bash
+  mvn verify
+  ```
+- **Couvert :** les services métier (règles de gestion, cas nominaux et cas d'erreur).
+- **Non couvert :**
+  - **Repositories** : ils reposent sur Spring Data JPA, déjà testé par le framework, et ne contiennent quasiment pas de logique propre.
+  - **Controllers et vues Thymeleaf** : ils se limitent au routage et au binding du modèle, la logique étant déléguée aux services. Ils ont été vérifiés manuellement.
+  - **Authentification maison** : elle n'est pas couverte automatiquement et a été validée manuellement. C'est la principale zone de risque, car nous n'avons pas pu nous appuyer sur un composant déjà testé comme Spring Security.
+
+---
+
+## CHOIX TECHNIQUES
+
+### Droits par profil
 
 
-## 5.7 Templates à créer
-- listeProgrammeurs.html, detailsProgrammeur.html, nouveauProgrammeur.html.
+| N°    | Fonctionnalité                        | Responsable d'exploitation | Agent          |
+| ------ | -------------------------------------- | -------------------------- | -------------- |
+| F2–F3 | Consulter équipements et fiches       | Lecture seule              | Lecture seule  |
+| F4     | Déclarer un incident                  | Interdit                   | Accès complet |
+| F5     | Consulter un incident                  | Accès complet             | Accès complet |
+| F6     | Modifier un incident                   | Interdit                   | Accès complet |
+| F7     | Affecter ou réaffecter un prestataire | Accès complet             | Accès complet |
+| F8     | Déclarer un incident résolu          | Interdit                   | Accès complet |
+| F9     | Consulter l'historique                 | Lecture seule              | Lecture seule  |
+| F10    | Évaluer un prestataire                | Lecture seule              | Accès complet |
+| F11    | Tableau de bord                        | Lecture seule              | Lecture seule  |
 
-## 5.8 Affichage d'un seul programmeur
-- Comment `Model` arrive dans la méthode : il suffit de le déclarer en paramètre. Spring le fournit.
-- Ajouter une donnée : `model.addAttribute("nom", valeur)`.
-- Lien avec `${...}` : le 1er paramètre d'addAttribute = le nom retrouvé dans l'expression. `addAttribute("programmeurs", liste)` → `${programmeurs}`.
-- `${programmeur.nom}` appelle `getNom()`.
-- Prénom du dernier programmeur : `liste.get(liste.size() - 1).getPrenom()`. Attention : liste vide → exception.
-- Template : `<span th:text="${prenomDernierProgrammeur}"></span>`.
-- Étape intermédiaire : laissée en commentaire dans le code.
+### Exceptions : `@ControllerAdvice` ou `ResponseStatusException` ?
 
-## 5.9 Affichage des programmeurs
-- Trois éléments :
-  - contrôleur : récupère la liste (service) et la met dans le Model ;
-  - contrôleur : renvoie le nom du template (`"listeProgrammeurs"`, sans `.html`) ;
-  - template : parcourt la liste avec `th:each`.
-- `th:each="programmeur : ${programmeurs}"` : répète la balise (`<tr>`) pour chaque élément. `programmeur` = élément courant.
-- `th:text` : affiche la valeur, HTML échappé.
+**Choix retenu :** `ResponseStatusException` combinée à des **exceptions métier personnalisées** (par exemple `IncidentNotFoundException`, `PrestataireIndisponibleException`, `ActionInterditeException`). `[À VÉRIFIER : noms réels, et si elles étendent ResponseStatusException, sont annotées @ResponseStatus, ou sont converties dans les controllers]`
 
-### 5.9.1 Squelette HTML
-- Fait : une ligne `<tr>` par programmeur, une colonne par attribut.
-- Noms utilisés : attributs de la classe Java (`langageExpertise`, `livrePrefere`), pas les colonnes SQL.
+**Fonctionnement :**
+- Les **services** lèvent des exceptions custom qui expriment une règle métier violée (ressource introuvable, action interdite pour le profil, affectation impossible...). Cela garde les services indépendants de HTTP.
+- Les exceptions sont traduites en réponse HTTP avec le bon code (404, 403, 400...) via `ResponseStatusException`.
 
-### 5.9.2 Bootstrap
-- Fait : `<link>` Bootstrap dans le `<head>`. Classes `table`, `table-striped`, `btn`...
+**Pourquoi :**
+- C'est simple à mettre en place : pas de classe de gestion globale à maintenir, et Spring produit automatiquement la réponse HTTP avec le bon statut.
+- Les exceptions custom donnent des messages d'erreur explicites et distinguent clairement les cas métier des erreurs techniques.
+- Petit projet donc c'est ok
 
-## 5.10 Suppression
+**Limites (analyse critique) :**
+- Le code HTTP est lié à l'endroit où l'exception est levée ou convertie, donc la gestion des erreurs est moins centralisée qu'avec `@ControllerAdvice`.
+- Les pages d'erreur restent celles par défaut de Spring : pas de vue Thymeleaf personnalisée selon le type d'erreur.
 
-### 5.10.1 Bouton "Supprimez"
-- Bouton dans un `<form>` par ligne du tableau. URL construite avec `@{/programmeurs/{id}(id=...)}`.
+### SOLID
 
-### 5.10.2 Que se passe-t-il au clic ? Cause ?
-- Erreur 405 Method Not Allowed.
-- Cause : le formulaire HTML n'envoie que GET ou POST. La route du contrôleur n'accepte que DELETE.
-- Un client HTTP (IntelliJ) peut envoyer DELETE. Pas un formulaire de navigateur.
+**Principes appliqués :**
+- **SRP (Single Responsibility)** : chaque couche a une seule responsabilité. Les controllers gèrent le routage et le binding du modèle, les services (`@Service`) portent la logique métier et les transactions, les repositories gèrent l'accès aux données. C'est ce qui nous a permis de concentrer les tests sur la couche Services (cf. TESTS).
+- **Injection de dépendances par constructeur** (inversion de contrôle) : les controllers déclarent leurs dépendances en champs `private final` et les reçoivent par constructeur (ex : `StationController(StationService stationService)`). Spring fournit l'instance, ce qui évite les `new` dans le code, rend les dépendances explicites et immuables, et permet de les remplacer par des mocks dans les tests (Mockito).
 
-### Note technique 3 – HiddenHttpMethodFilter
-- Filtre de Spring MVC.
-- Sur une requête POST, lit le paramètre `_method`.
-- Si la valeur est PUT, PATCH ou DELETE : la requête est présentée à Spring avec cette méthode.
-- Le contrôleur voit donc un vrai DELETE ou PUT.
-- Formulaire : `method="POST"` + `<input type="hidden" name="_method" value="DELETE">`.
-- Raccourci Thymeleaf : `th:method="DELETE"` génère les deux.
-- Activation (désactivé par défaut) : `spring.mvc.hiddenmethod.filter.enabled=true` dans application.properties.
+**Principes écartés ou adaptés :**
+- **DIP (Dependency Inversion), appliqué partiellement** : les controllers dépendent de **classes concrètes** (`StationService`) et non d'interfaces. Nous avons préféré ne pas créer une interface par service, car il n'existe qu'une seule implémentation de chacun et cela aurait doublé le nombre de fichiers sans bénéfice réel à cette échelle. En contrepartie, le couplage est plus fort : changer d'implémentation obligerait à modifier les controllers.
+- **ISP (Interface Segregation)** : nous utilisons directement `JpaRepository`, qui expose beaucoup de méthodes.
+- **OCP (Open/Closed)** : appliqué seulement ponctuellement. Les règles métier (par exemple les permissions par rôle) sont écrites de façon simple plutôt qu'avec un système de stratégies extensibles, jugé disproportionné pour deux profils.
 
-### 5.10.3 Solution + redirection
-- Filtre activé + `th:method="DELETE"`.
-- Contrôleur : `return "redirect:/programmeurs"`.
-- Redirection : réponse 302 + en-tête `Location`. Le navigateur refait un GET /programmeurs.
-- Pourquoi pas `return "listeProgrammeurs"` directement :
-  - la liste n'est pas dans le Model → page vide ou erreur ;
-  - l'URL affichée resterait celle de l'action (/programmeurs/12) ;
-  - F5 rejouerait la suppression.
-- Pattern : Post / Redirect / Get.
-- Id inexistant : `ResponseStatusException` 404.
+### Requête SQL native
 
-## 5.11 Ajout
+- **Où :** dans le repository des événements d'incident (`findJournal`), seule requête native du projet :
+  ```java
+  @Query(value = """
+      SELECT id, incident_id, auteur_id, date_evenement, type_evenement, detail
+      FROM evenement_incident
+      WHERE incident_id = :incidentId
+      ORDER BY date_evenement, id
+      """, nativeQuery = true)
+  List<IncidentEvent> findJournal(@Param("incidentId") Long incidentId);
+  ```
+- **À quoi elle sert :** elle retourne le journal complet d'un incident (création, affectation ou réaffectation d'un prestataire, modification, résolution...) dans l'ordre chronologique, pour la consultation de l'historique (F9).
+- **Analyse critique :**
+  - **Points positifs :** le SQL est lisible et on maîtrise exactement les colonnes lues et le tri. Le tri secondaire sur `id` rend l'ordre déterministe quand deux événements ont la même `date_evenement`. Le paramètre nommé `:incidentId` est lié par JDBC, ce qui évite toute injection SQL.
+  - **Limites :** cette requête ne justifie pas vraiment le SQL natif. C'est un simple `SELECT ... WHERE ... ORDER BY` sur une seule table, qu'une méthode dérivée Spring Data (`findByIncidentIdOrderByDateEvenementAscIdAsc`) ou une requête JPQL exprimerait aussi bien, avec une vérification à la compilation. Le natif apporte surtout la maîtrise explicite du SQL, et nous l'avons choisi pour illustrer son usage.
+  - **Fragilité :** la requête n'est pas validée par rapport au modèle d'entités. Un renommage de colonne ou d'attribut ne provoque une erreur qu'à l'exécution, et les colonnes sélectionnées doivent correspondre exactement au mapping de `IncidentEvent`.
 
-### 5.11.1 Bouton "Ajoutez"
-- Liste : formulaire GET vers `/programmeurs/nouveau`.
-- Contrôleur : met un `Programmeur` vide dans le Model (`nouveauProgrammeur`) → template `nouveauProgrammeur`.
-- Template : `th:object="${nouveauProgrammeur}"` + `th:field="*{nom}"`, etc.
-- Bouton "Enregistrez" : POST vers `/programmeurs`.
+### `@Transactional`
 
-### 5.11.2 Succès → liste actualisée
-- `@ModelAttribute` (et non `@RequestBody`) : le formulaire envoie `nom=valeur&...`, pas du JSON.
-- Noms des champs = noms des attributs de `Programmeur`.
-- Service : `ajouterProgrammeur`. Puis `redirect:/programmeurs`.
-- Le service force l'id à null : POST crée toujours.
+- **Où :** sur la couche **services**, avec une stratégie en deux niveaux. La classe est annotée `@Transactional(readOnly = true)` par défaut, et chaque méthode qui écrit en base (création, mise à jour, suppression) redéclare `@Transactional` pour passer en lecture-écriture. Exemple dans `EvaluationService` :
+  ```java
+  @Service
+  @Transactional(readOnly = true)
+  public class EvaluationService {
+      // lecture : getEvaluation, isEvaluable, getEvaluableIncident
 
-## 5.12 Modification
+      @Transactional
+      public Evaluation evaluate(Long incidentId, Evaluation evaluation) { ... }
+  }
+  ```
+- **Pourquoi :**
+  - **Sûr par défaut :** une nouvelle méthode de lecture est automatiquement en lecture seule, et seules les méthodes d'écriture, explicitement annotées, peuvent modifier la base. Hibernate évite alors le dirty checking inutile sur les lectures.
+  - **Atomicité de la vérification et de l'écriture :** `evaluate` lit l'incident, vérifie qu'il est évaluable (résolu, affecté à un prestataire, pas encore évalué) puis enregistre l'évaluation. Ces étapes s'exécutent dans une seule transaction : si l'une échoue, rien n'est persisté.
+  - **Rollback automatique :** `EvaluationNotAllowedException` étend `RuntimeException`, donc Spring annule la transaction sans code supplémentaire.
+  - **Transaction partagée entre services :** `evaluate` appelle `IncidentService`, dont les méthodes rejoignent la transaction en cours (propagation `REQUIRED` par défaut), ce qui donne un seul commit pour toute l'opération.
 
-### 5.12.1 Bouton "Modifiez"
-- Liste : formulaire GET vers `/programmeurs/{id}`.
-- Contrôleur : charge le programmeur → Model (`programmeurToUpdate`) → template `detailsProgrammeur`.
-- Formulaire prérempli : `th:object` + `th:field` (génère `value`).
-- Validation : POST + `_method=PUT` (`th:method="PUT"`), vers `/programmeurs/{id}`.
 
-### 5.12.2 Succès → liste actualisée
-- `@PutMapping("/{id}")` avec `@ModelAttribute`.
-- Service : `modifierProgrammeur` (@Transactional).
-- Puis `redirect:/programmeurs`.
-- Id inexistant : 404.
+## BILAN
 
-## Remarques
-- Salaire : `<input type="number" step="any">`. Le navigateur envoie un point décimal. Avec `type="text"`, "45000,5" → erreur de conversion (400).
-- `server.error.include-message=always` : affiche le message du 404 dans la page d'erreur.
-- Les routes restent celles de 4.8 (REST) : seules les routes de formulaires s'ajoutent (`/nouveau`).
-- Le service n'a pas changé : seuls les commentaires ont été enrichis.
+- **Contribution de chacun :**
+  - **Arthur :** tableau de bord (F11) et gestion des permissions de chaque rôle et autres.
+  - **Ethan :** authentification (sans Spring Security), entités, services et controllers associés, pages Thymeleaf de base (hors authentification), et carte d'affichage des stations avec Leaflet (+ CSS).
 
-## Routes finales
-- GET /programmeurs → listeProgrammeurs
-- GET /programmeurs/nouveau → nouveauProgrammeur
-- GET /programmeurs/{id} → detailsProgrammeur
-- POST /programmeurs → ajout, redirection
-- PUT /programmeurs/{id} → modification, redirection (via `_method`)
-- DELETE /programmeurs/{id} → suppression, redirection (via `_method`)
+- **Trois points à retenir du cours et du projet :**
+  1. **Ne pas réinventer ce que le framework fournit** : l'authentification maison nous a coûté du temps pour un résultat moins fiable que Spring Security.
+  2. **Une architecture en couches stricte** (Controller → Service → Repository) rend l'application lisible et permet de concentrer les tests sur la logique métier.
+  3. **`@Transactional` et les tests de services** garantissent la cohérence des données : c'est là que se jouent les règles métier d'Aurora.
