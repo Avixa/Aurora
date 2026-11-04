@@ -33,7 +33,6 @@ public class DashboardController {
                                 Model model) {
 
         List<ActiveIncident> activeIncidents = dashboardService.getActiveIncidents();
-        // counters describe the whole network, the table shows the filtered selection
         model.addAttribute("counts", dashboardService.countByLevel(activeIncidents));
         model.addAttribute("totalActive", activeIncidents.size());
         model.addAttribute("incidents", dashboardService.filter(activeIncidents, stationId, level));

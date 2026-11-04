@@ -16,7 +16,7 @@ public class Equipment {
     @Column(name = "id", nullable = false)
     private Long id;
 
-    // RG9: reference unique
+    // reference unique
     @Column(name = "reference", nullable = false, length = 30, unique = true)
     private String reference;
 

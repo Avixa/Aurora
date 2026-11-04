@@ -9,6 +9,7 @@ import altn72.aurora.modele.incident.Incident;
 import altn72.aurora.modele.provider.ProviderRepository;
 import altn72.aurora.service.EquipmentService;
 import altn72.aurora.service.IncidentService;
+import altn72.aurora.service.IncidentEventService;
 import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
@@ -27,15 +28,18 @@ public class IncidentController {
     private final EquipmentService equipmentService;
     private final ProviderRepository providerRepository;
     private final EvaluationService evaluationService;
+    private final IncidentEventService incidentEventService;
 
     public IncidentController(IncidentService incidentService,
                               EquipmentService equipmentService,
                               ProviderRepository providerRepository,
-                              EvaluationService evaluationService) {
+                              EvaluationService evaluationService,
+                              IncidentEventService incidentEventService) {
         this.incidentService = incidentService;
         this.equipmentService = equipmentService;
         this.providerRepository = providerRepository;
         this.evaluationService = evaluationService;
+        this.incidentEventService = incidentEventService;
     }
 
     // Only these two fields can be bound from the form
@@ -80,6 +84,7 @@ public class IncidentController {
         model.addAttribute("evaluation", evaluationService.getEvaluation(incidentId).orElse(null));
         model.addAttribute("evaluable", evaluationService.isEvaluable(incident));
         model.addAttribute("hoursOpen", incidentService.getHoursOpen(incident));
+        model.addAttribute("journal", incidentEventService.getJournal(incidentId));
         return "incidentDetails";
     }
 

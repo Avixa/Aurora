@@ -3,7 +3,7 @@ package altn72.aurora.modele.incident;
 import java.time.Duration;
 
 /**
- * Attention level of an active incident on the dashboard (RG3, RG4).
+ * Attention level of an active incident on the dashboard.
  * Computed from the current time on each display, never stored in the database.
  */
 public enum AttentionLevel {

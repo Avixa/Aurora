@@ -220,6 +220,30 @@
         </a>
     </div>
 
+
+    <h2>Journal de l'incident</h2>
+    <table class="table table-striped align-middle">
+        <thead>
+        <tr>
+            <th>Date</th>
+            <th>Action</th>
+            <th>Auteur</th>
+            <th>Détail</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="event : ${journal}">
+            <td th:text="${#temporals.format(event.eventDate, 'dd/MM/yyyy HH:mm')}"></td>
+            <td th:text="${event.type.label}"></td>
+            <td th:text="${event.author?.firstName} ?: '—'"></td>
+            <td th:text="${event.detail}"></td>
+        </tr>
+        <tr th:if="${#lists.isEmpty(journal)}">
+            <td colspan="4">Aucun événement enregistré.</td>
+        </tr>
+        </tbody>
+    </table>
+
 </main>
 
 </body>
