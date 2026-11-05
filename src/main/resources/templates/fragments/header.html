@@ -35,6 +35,27 @@
         }
     </style>
 
+    <link rel="stylesheet" th:href="@{/css/aurora.css}">
+
+    <script>
+        // reapply the saved theme on every page, before the content is drawn
+        if (localStorage.getItem('aurora-theme') === 'dark') {
+            document.documentElement.setAttribute('data-bs-theme', 'dark');
+        }
+
+        function toggleTheme() {
+            const next = document.documentElement.getAttribute('data-bs-theme') === 'dark' ? 'light' : 'dark';
+            const apply = () => document.documentElement.setAttribute('data-bs-theme', next);
+            // smooth cross-fade when the browser supports it
+            if (document.startViewTransition) {
+                document.startViewTransition(apply);
+            } else {
+                apply();
+            }
+            localStorage.setItem('aurora-theme', next);
+        }
+    </script>
+
     <header th:if="${session.loggedUser != null}" class="app-header">
         <div class="container d-flex justify-content-between align-items-center">
             <!-- App Brand / Navigation Home Link -->
@@ -48,6 +69,12 @@
                     Bonjour <strong th:text="${session.loggedUser.firstName()}"></strong>
                     <span class="user-role" th:text="'(' + ${session.loggedUser.profile().label} + ')'"></span>
                 </span>
+
+                <button type="button" class="btn btn-sm btn-theme" onclick="toggleTheme()"
+                        title="Changer de thème" aria-label="Changer de thème">
+                    <span class="icon-to-dark">🌙</span>
+                    <span class="icon-to-light">☀️</span>
+                </button>
 
                 <form th:action="@{/logout}" method="post" class="m-0">
                     <button type="submit" class="btn btn-sm btn-logout">

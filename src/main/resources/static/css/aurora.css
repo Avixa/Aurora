@@ -1,0 +1,640 @@
+/* =====================================================================
+   Aurora - shared theme
+   Loaded after each page's own <style>, so it overrides it.
+   ===================================================================== */
+
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap");
+
+:root {
+    --au-text: #0f172a;
+    --au-text-2: #334155;
+    --au-muted: #64748b;
+    --au-blue: #2563eb;
+    --au-blue-dark: #1e40af;
+    --au-border: #e3e8f0;
+    --au-radius: 14px;
+    --au-shadow: 0 1px 2px rgba(15, 23, 42, .04), 0 8px 24px rgba(15, 23, 42, .06);
+    --au-shadow-hover: 0 2px 4px rgba(15, 23, 42, .05), 0 16px 36px rgba(15, 23, 42, .10);
+    --au-gradient: linear-gradient(135deg, #2563eb 0%, #1e40af 100%);
+    --au-accent: linear-gradient(90deg, #1e40af 0%, #0ea5e9 100%);
+    --au-ease: cubic-bezier(.2, .7, .2, 1);
+}
+
+/* ---------- Page ---------- */
+
+body {
+    font-family: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+    color: var(--au-text-2);
+    background:
+            radial-gradient(1100px 520px at 105% -10%, rgba(37, 99, 235, .10), transparent 60%),
+            radial-gradient(900px 480px at -10% 0%, rgba(14, 165, 233, .07), transparent 55%),
+            #f3f6fb;
+    background-attachment: fixed;
+    -webkit-font-smoothing: antialiased;
+}
+
+::selection {
+    background: rgba(37, 99, 235, .18);
+}
+
+a {
+    color: var(--au-blue-dark);
+}
+
+a:not(.btn):hover {
+    color: var(--au-blue);
+}
+
+/* ---------- Header (sticky, navy gradient) ---------- */
+
+body > div:has(> .app-header) {
+    position: sticky;
+    top: 0;
+    z-index: 1030;
+}
+
+.app-header {
+    position: relative;
+    padding: .85rem 0;
+    border-bottom: 0;
+    background: linear-gradient(110deg, rgba(11, 19, 36, .97) 0%, rgba(23, 37, 84, .96) 55%, rgba(30, 58, 138, .95) 100%);
+    backdrop-filter: blur(10px);
+    box-shadow: 0 8px 24px rgba(11, 19, 36, .18);
+}
+
+/* light line sliding under the header */
+.app-header::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, #38bdf8 30%, #2563eb 50%, #38bdf8 70%, transparent);
+    background-size: 200% 100%;
+    animation: au-sheen 8s linear infinite;
+}
+
+.app-header a.text-dark {
+    color: #fff !important;
+    letter-spacing: .01em;
+    transition: opacity .2s ease;
+}
+
+.app-header a.text-dark:hover {
+    opacity: .85;
+    text-decoration: none;
+}
+
+.app-header .user-badge {
+    color: #cbd5e1;
+}
+
+.app-header .user-badge strong {
+    color: #fff;
+}
+
+.app-header .user-role {
+    color: #93c5fd;
+}
+
+.app-header .btn-logout {
+    color: #fecaca;
+    background: rgba(239, 68, 68, .12);
+    border: 1px solid rgba(248, 113, 113, .35);
+}
+
+.app-header .btn-logout:hover {
+    color: #fff;
+    background: linear-gradient(135deg, #ef4444, #b91c1c);
+    border-color: transparent;
+}
+
+/* ---------- Titles ---------- */
+
+h1 {
+    color: var(--au-text);
+    font-weight: 700;
+    letter-spacing: -.02em;
+}
+
+h1::after {
+    content: "";
+    display: block;
+    width: 56px;
+    height: 4px;
+    margin-top: .55rem;
+    border-radius: 4px;
+    background: var(--au-accent);
+    animation: au-grow .8s var(--au-ease) .15s both;
+}
+
+h2 {
+    color: var(--au-text);
+    font-weight: 600;
+    padding: 0 0 0 .75rem;
+    border-bottom: 0;
+    border-left: 4px solid;
+    border-image: linear-gradient(180deg, #1e40af, #0ea5e9) 1;
+}
+
+/* ---------- Cards ---------- */
+
+.indicators-card,
+.filters-card,
+.summary-card,
+.form-card,
+.action-card,
+.evaluation-box,
+.map-card,
+.login-card,
+main dl {
+    background-color: #fff;
+    border: 1px solid var(--au-border);
+    border-radius: var(--au-radius);
+    box-shadow: var(--au-shadow);
+    transition: box-shadow .3s var(--au-ease);
+}
+
+.indicators-card:hover,
+.filters-card:hover,
+.summary-card:hover,
+.form-card:hover,
+.action-card:hover,
+.evaluation-box:hover,
+.map-card:hover,
+main dl:hover {
+    box-shadow: var(--au-shadow-hover);
+}
+
+/* gradient bar on top of the main cards */
+.indicators-card,
+.form-card,
+.login-card {
+    background: var(--au-accent) top / 100% 3px no-repeat, #fff;
+}
+
+/* dashboard figures shown as chips */
+.indicators-card strong {
+    display: inline-block;
+    min-width: 2rem;
+    margin-left: .15rem;
+    padding: .1rem .55rem;
+    border-radius: 999px;
+    text-align: center;
+    font-weight: 700;
+    color: #1e3a8a;
+    background: linear-gradient(135deg, #eff6ff, #dbeafe);
+}
+
+.empty-state {
+    border-radius: var(--au-radius);
+}
+
+/* ---------- Tables ---------- */
+/* "body" raises priority above the incidentTable fragment's styles */
+
+body .table {
+    --bs-table-bg: #fff;
+    --bs-table-striped-bg: #f8fafc;
+    border-collapse: separate;
+    border-spacing: 0;
+    border: 1px solid var(--au-border);
+    border-radius: var(--au-radius);
+    box-shadow: var(--au-shadow);
+    overflow: hidden;
+}
+
+body .table thead th {
+    padding: .9rem 1rem;
+    font-size: .75rem;
+    font-weight: 700;
+    letter-spacing: .06em;
+    text-transform: uppercase;
+    color: #475569;
+    background-image: linear-gradient(180deg, #f8fafc, #eef2f8);
+    border-bottom: 1px solid var(--au-border);
+}
+
+body .table td {
+    padding: .85rem 1rem;
+    color: var(--au-text-2);
+    border-top: 0;
+    border-bottom: 1px solid #eef2f7;
+    transition: box-shadow .2s ease;
+}
+
+body .table > tbody > tr:last-child > td {
+    border-bottom: 0;
+}
+
+/* hovered row: light blue tint + blue bar growing on the left.
+   Both states use the same two shadows, so only their values are animated. */
+body .table > tbody > tr > td {
+    box-shadow: inset 0 0 0 9999px var(--bs-table-bg-state, var(--bs-table-bg-type, var(--bs-table-accent-bg))),
+    inset 0 0 0 0 var(--au-blue);
+    transition: box-shadow .3s ease;
+}
+
+body .table > tbody > tr:hover > td {
+    --bs-table-bg-state: rgba(37, 99, 235, .06);
+}
+
+body .table > tbody > tr:hover > td:first-child {
+    box-shadow: inset 0 0 0 9999px var(--bs-table-bg-state),
+    inset 3px 0 0 0 var(--au-blue);
+}
+
+body .table a:not(.btn) {
+    color: var(--au-blue-dark);
+}
+
+/* rows appear one after the other */
+body .table > tbody > tr {
+    animation: au-fade .45s ease both;
+}
+
+body .table > tbody > tr:nth-child(2) { animation-delay: .05s; }
+body .table > tbody > tr:nth-child(3) { animation-delay: .10s; }
+body .table > tbody > tr:nth-child(4) { animation-delay: .15s; }
+body .table > tbody > tr:nth-child(5) { animation-delay: .20s; }
+body .table > tbody > tr:nth-child(n+6) { animation-delay: .25s; }
+
+/* ---------- Badges (attention levels keep their meaning) ---------- */
+
+body .badge {
+    padding: .42em .8em;
+    border-radius: 999px;
+    font-weight: 600;
+    letter-spacing: .02em;
+    box-shadow: 0 1px 2px rgba(15, 23, 42, .12);
+}
+
+body .badge.bg-success {
+    background-image: linear-gradient(135deg, #22c55e, #15803d);
+}
+
+body .badge.bg-warning {
+    background-image: linear-gradient(135deg, #fcd34d, #f59e0b);
+}
+
+body .badge.bg-danger {
+    background-image: linear-gradient(135deg, #ef4444, #b91c1c);
+    animation: au-pulse 2s ease-out infinite;
+}
+
+body .badge.bg-secondary {
+    background-image: linear-gradient(135deg, #64748b, #475569);
+}
+
+/* ---------- Buttons ---------- */
+
+.btn {
+    border-radius: 10px;
+    font-weight: 600;
+    transition: transform .2s var(--au-ease), box-shadow .2s var(--au-ease),
+    background-position .4s ease, color .2s ease, border-color .2s ease;
+}
+
+.btn-sm {
+    border-radius: 8px;
+}
+
+.btn:hover {
+    text-decoration: none;
+    transform: translateY(-1px);
+}
+
+.btn:active {
+    transform: translateY(0);
+}
+
+.btn-primary,
+.btn-success {
+    border-color: transparent;
+    background-size: 200% 100%;
+}
+
+.btn-primary {
+    background-image: linear-gradient(120deg, #2563eb 0%, #1e40af 50%, #2563eb 100%);
+    box-shadow: 0 4px 14px rgba(37, 99, 235, .28);
+}
+
+.btn-success {
+    background-image: linear-gradient(120deg, #16a34a 0%, #15803d 50%, #16a34a 100%);
+    box-shadow: 0 4px 14px rgba(22, 163, 74, .25);
+}
+
+.btn-primary:hover,
+.btn-success:hover {
+    border-color: transparent;
+    background-position: 100% 0;
+}
+
+.btn-primary:hover {
+    box-shadow: 0 8px 22px rgba(37, 99, 235, .36);
+}
+
+.btn-success:hover {
+    box-shadow: 0 8px 22px rgba(22, 163, 74, .32);
+}
+
+.btn-outline-primary {
+    --bs-btn-color: #1d4ed8;
+    --bs-btn-border-color: #bfd3fb;
+    --bs-btn-hover-color: #fff;
+    --bs-btn-hover-border-color: transparent;
+}
+
+.btn-outline-primary:hover {
+    background-image: var(--au-gradient);
+    box-shadow: 0 6px 16px rgba(37, 99, 235, .25);
+}
+
+.btn-outline-secondary {
+    --bs-btn-color: #334155;
+    --bs-btn-bg: #fff;
+    --bs-btn-border-color: #d5dce7;
+    --bs-btn-hover-color: #1e40af;
+    --bs-btn-hover-bg: #fff;
+    --bs-btn-hover-border-color: #93b4f5;
+    --bs-btn-active-color: #1e40af;
+    --bs-btn-active-bg: #eff6ff;
+    --bs-btn-active-border-color: #93b4f5;
+    box-shadow: 0 1px 2px rgba(15, 23, 42, .05);
+}
+
+.btn-outline-secondary:hover {
+    box-shadow: 0 6px 16px rgba(37, 99, 235, .14);
+}
+
+/* ---------- Forms ---------- */
+
+.form-label {
+    color: var(--au-text);
+    font-weight: 600;
+}
+
+.form-control,
+.form-select {
+    border-radius: 10px;
+    border-color: #d5dce7;
+    background-color: #fbfcfe;
+    transition: border-color .2s ease, box-shadow .2s ease, background-color .2s ease;
+}
+
+.form-control:hover,
+.form-select:hover {
+    border-color: #b6c3d6;
+}
+
+.form-control:focus,
+.form-select:focus {
+    border-color: var(--au-blue);
+    background-color: #fff;
+    box-shadow: 0 0 0 4px rgba(37, 99, 235, .14);
+}
+
+/* ---------- Login page ---------- */
+
+body:has(> .login-card) {
+    background: linear-gradient(135deg, #0b1324 0%, #172554 40%, #1e3a8a 70%, #0b1324 100%);
+    background-size: 300% 300%;
+    animation: au-pan 16s ease infinite;
+}
+
+.login-card {
+    padding: 2.25rem;
+    border-color: rgba(255, 255, 255, .6);
+    box-shadow: 0 24px 60px rgba(2, 6, 23, .45);
+    animation: au-rise .6s var(--au-ease) both;
+}
+
+.login-card h1::after {
+    margin-inline: auto;
+}
+
+/* ---------- Page entrance: blocks appear one after the other ---------- */
+
+main > * {
+    animation: au-rise .55s var(--au-ease) both;
+}
+
+main > :nth-child(2) { animation-delay: .05s; }
+main > :nth-child(3) { animation-delay: .10s; }
+main > :nth-child(4) { animation-delay: .15s; }
+main > :nth-child(5) { animation-delay: .20s; }
+main > :nth-child(n+6) { animation-delay: .25s; }
+
+/* ---------- Animations ---------- */
+
+@keyframes au-rise {
+    from { opacity: 0; transform: translateY(14px); }
+    to { opacity: 1; transform: none; }
+}
+
+@keyframes au-fade {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+@keyframes au-grow {
+    from { width: 0; }
+    to { width: 56px; }
+}
+
+@keyframes au-sheen {
+    from { background-position: 200% 0; }
+    to { background-position: 0 0; }
+}
+
+@keyframes au-pan {
+    0%, 100% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+}
+
+@keyframes au-pulse {
+    0% { box-shadow: 0 0 0 0 rgba(220, 38, 38, .45); }
+    70% { box-shadow: 0 0 0 8px rgba(220, 38, 38, 0); }
+    100% { box-shadow: 0 0 0 0 rgba(220, 38, 38, 0); }
+}
+
+/* users who disable animations in their system settings */
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        animation: none !important;
+        transition: none !important;
+    }
+}
+
+
+
+/* =====================================================================
+   Dark mode - active when <html data-bs-theme="dark">
+   (Bootstrap 5.3 switches its own colours with the same attribute)
+   ===================================================================== */
+
+[data-bs-theme="dark"] {
+    --au-text: #e2e8f0;
+    --au-text-2: #cbd5e1;
+    --au-muted: #94a3b8;
+    --au-blue-dark: #93c5fd;   /* links: light blue on dark background */
+    --au-border: #243049;
+    --au-surface: #111a2e;
+    --au-shadow: 0 1px 2px rgba(0, 0, 0, .30), 0 8px 24px rgba(0, 0, 0, .35);
+    --au-shadow-hover: 0 2px 4px rgba(0, 0, 0, .35), 0 16px 36px rgba(0, 0, 0, .45);
+}
+
+[data-bs-theme="dark"] body {
+    background:
+            radial-gradient(1100px 520px at 105% -10%, rgba(37, 99, 235, .18), transparent 60%),
+            radial-gradient(900px 480px at -10% 0%, rgba(14, 165, 233, .10), transparent 55%),
+            #0a1020;
+    background-attachment: fixed;
+}
+
+[data-bs-theme="dark"] .app-header {
+    background: linear-gradient(110deg, rgba(5, 9, 19, .97) 0%, rgba(15, 24, 48, .96) 55%, rgba(23, 37, 84, .95) 100%);
+}
+
+/* cards */
+[data-bs-theme="dark"] :is(.indicators-card, .filters-card, .summary-card, .form-card,
+                           .action-card, .evaluation-box, .map-card, main dl, .empty-state) {
+    background-color: var(--au-surface);
+    border-color: var(--au-border);
+}
+
+[data-bs-theme="dark"] :is(.indicators-card, .form-card) {
+    background: var(--au-accent) top / 100% 3px no-repeat, var(--au-surface);
+}
+
+[data-bs-theme="dark"] .indicators-card strong {
+    color: #bfdbfe;
+    background: rgba(59, 130, 246, .18);
+}
+
+[data-bs-theme="dark"] dt {
+    color: var(--au-muted);
+}
+
+[data-bs-theme="dark"] dd {
+    color: var(--au-text);
+}
+
+[data-bs-theme="dark"] .edit-link-container {
+    border-top-color: var(--au-border);
+}
+
+[data-bs-theme="dark"] .empty-state {
+    color: var(--au-muted);
+}
+
+/* tables */
+[data-bs-theme="dark"] body .table {
+    --bs-table-bg: var(--au-surface);
+    --bs-table-striped-bg: #152039;
+}
+
+[data-bs-theme="dark"] body .table thead th {
+    color: var(--au-muted);
+    background-image: linear-gradient(180deg, #17223a, #131c31);
+}
+
+[data-bs-theme="dark"] body .table td {
+    border-bottom-color: #1d2840;
+}
+
+[data-bs-theme="dark"] body .table > tbody > tr:hover > td {
+    --bs-table-bg-state: rgba(96, 165, 250, .10);
+}
+
+[data-bs-theme="dark"] body .table .empty-cell {
+    background-color: var(--au-surface);
+}
+
+/* buttons */
+[data-bs-theme="dark"] .btn-outline-primary {
+    --bs-btn-color: #93c5fd;
+    --bs-btn-border-color: rgba(147, 197, 253, .35);
+}
+
+[data-bs-theme="dark"] .btn-outline-secondary {
+    --bs-btn-color: #cbd5e1;
+    --bs-btn-bg: #111a2e;
+    --bs-btn-border-color: #2a3654;
+    --bs-btn-hover-color: #bfdbfe;
+    --bs-btn-hover-bg: #16213a;
+    --bs-btn-hover-border-color: #3b5bab;
+    --bs-btn-active-color: #bfdbfe;
+    --bs-btn-active-bg: #1a2744;
+    --bs-btn-active-border-color: #3b5bab;
+}
+
+/* forms (fields in error keep their red border) */
+[data-bs-theme="dark"] :is(.form-control, .form-select) {
+    color: var(--au-text);
+    background-color: #0d1527;
+}
+
+[data-bs-theme="dark"] :is(.form-control, .form-select):not(.is-invalid) {
+    border-color: #2a3654;
+}
+
+[data-bs-theme="dark"] :is(.form-control, .form-select):not(.is-invalid):hover {
+    border-color: #3a4a6e;
+}
+
+[data-bs-theme="dark"] :is(.form-control, .form-select):not(.is-invalid):focus {
+    background-color: #0f1a30;
+    border-color: #3b82f6;
+    box-shadow: 0 0 0 4px rgba(59, 130, 246, .22);
+}
+
+[data-bs-theme="dark"] .invalid-feedback-custom {
+    color: #f87171;
+}
+
+/* map tiles darkened */
+[data-bs-theme="dark"] #map .leaflet-tile-pane {
+    filter: invert(1) hue-rotate(180deg) brightness(.9) contrast(.9);
+}
+
+/* ---------- Theme toggle button (header) ---------- */
+
+.app-header .btn-theme {
+    color: #e2e8f0;
+    background: rgba(255, 255, 255, .08);
+    border: 1px solid rgba(255, 255, 255, .18);
+}
+
+.app-header .btn-theme:hover {
+    color: #fff;
+    background: rgba(255, 255, 255, .16);
+}
+
+.icon-to-light {
+    display: none;
+}
+
+[data-bs-theme="dark"] .icon-to-dark {
+    display: none;
+}
+
+[data-bs-theme="dark"] .icon-to-light {
+    display: inline;
+}
+
+/* length of the cross-fade when switching theme */
+::view-transition-old(root),
+::view-transition-new(root) {
+    animation-duration: .4s;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    ::view-transition-old(root),
+    ::view-transition-new(root) {
+        animation: none;
+    }
+}
