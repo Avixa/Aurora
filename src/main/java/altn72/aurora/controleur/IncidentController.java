@@ -2,14 +2,10 @@ package altn72.aurora.controleur;
 
 import altn72.aurora.config.RequiresPermission;
 import altn72.aurora.modele.auth.Permission;
-import altn72.aurora.service.EvaluationService;
+import altn72.aurora.service.*;
 
 import altn72.aurora.modele.auth.UserSession;
 import altn72.aurora.modele.incident.Incident;
-import altn72.aurora.modele.provider.ProviderRepository;
-import altn72.aurora.service.EquipmentService;
-import altn72.aurora.service.IncidentService;
-import altn72.aurora.service.IncidentEventService;
 import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
@@ -26,20 +22,20 @@ public class IncidentController {
 
     private final IncidentService incidentService;
     private final EquipmentService equipmentService;
-    private final ProviderRepository providerRepository;
     private final EvaluationService evaluationService;
     private final IncidentEventService incidentEventService;
+    private final ProviderService providerService;
 
     public IncidentController(IncidentService incidentService,
                               EquipmentService equipmentService,
-                              ProviderRepository providerRepository,
                               EvaluationService evaluationService,
-                              IncidentEventService incidentEventService) {
+                              IncidentEventService incidentEventService,
+                              ProviderService providerService) {
         this.incidentService = incidentService;
         this.equipmentService = equipmentService;
-        this.providerRepository = providerRepository;
         this.evaluationService = evaluationService;
         this.incidentEventService = incidentEventService;
+        this.providerService = providerService;
     }
 
     // Only these two fields can be bound from the form
@@ -80,7 +76,7 @@ public class IncidentController {
     public String show(@PathVariable Long incidentId, Model model) {
         Incident incident = incidentService.getIncident(incidentId);
         model.addAttribute("incident", incident);
-        model.addAttribute("providers", providerRepository.findAll());
+        model.addAttribute("providers", providerService.getProviders());
         model.addAttribute("evaluation", evaluationService.getEvaluation(incidentId).orElse(null));
         model.addAttribute("evaluable", evaluationService.isEvaluable(incident));
         model.addAttribute("hoursOpen", incidentService.getHoursOpen(incident));
