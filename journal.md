@@ -144,6 +144,12 @@ Aurora est une application web Spring Boot en architecture en couches, qui répe
 
 ---
 
+
+## DEPLOIEMENT
+
+**Plateforme:** render.com
+**Url:** https://aurora-dipd.onrender.com
+
 ## BILAN
 
 - **Contribution de chacun :**
